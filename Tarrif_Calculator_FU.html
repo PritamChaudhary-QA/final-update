@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Bill Calculator</title>
+    <style>
+        
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --primary-light: #e0f2fe;
+            --primary-gradient: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            --secondary: #0f172a;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --background: #f0f9ff;
+            --background-alt: #e0f2fe;
+            --card: #ffffff;
+            --border: #bae6fd;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --accent: #8b5cf6;
+            --accent-light: #f3e8ff;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --shadow-sm: 0 2px 4px rgba(14, 165, 233, 0.06), 0 1px 2px rgba(14, 165, 233, 0.08);
+            --shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.1), 0 2px 4px -1px rgba(14, 165, 233, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(14, 165, 233, 0.1), 0 4px 6px -2px rgba(14, 165, 233, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(14, 165, 233, 0.1), 0 10px 10px -5px rgba(14, 165, 233, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+           
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%230ea5e9' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 1080 900'%3E%3Cg fill-opacity='0.02'%3E%3Cpolygon fill='%23444' points='90 150 0 300 180 300'%3E%3C/polygon%3E%3Cpolygon points='90 150 180 0 0 0'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='270 150 360 0 180 0'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='450 150 360 300 540 300'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='450 150 540 0 360 0'%3E%3C/polygon%3E%3Cpolygon points='630 150 540 300 720 300'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='630 150 720 0 540 0'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='810 150 720 300 900 300'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='810 150 900 0 720 0'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='990 150 900 300 1080 300'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='990 150 1080 0 900 0'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='90 450 0 600 180 600'%3E%3C/polygon%3E%3Cpolygon points='90 450 180 300 0 300'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='270 450 180 600 360 600'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='270 450 360 300 180 300'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='450 450 360 600 540 600'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='450 450 540 300 360 300'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='630 450 540 600 720 600'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='630 450 720 300 540 300'%3E%3C/polygon%3E%3Cpolygon points='810 450 720 600 900 600'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='810 450 900 300 720 300'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='990 450 900 600 1080 600'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='990 450 1080 300 900 300'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='90 750 0 900 180 900'%3E%3C/polygon%3E%3Cpolygon points='270 750 180 900 360 900'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='270 750 360 600 180 600'%3E%3C/polygon%3E%3Cpolygon points='450 750 540 600 360 600'%3E%3C/polygon%3E%3Cpolygon points='630 750 540 900 720 900'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='630 750 720 600 540 600'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='810 750 720 900 900 900'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='810 750 900 600 720 600'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='990 750 900 900 1080 900'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='180 0 90 150 270 150'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='360 0 270 150 450 150'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='540 0 450 150 630 150'%3E%3C/polygon%3E%3Cpolygon points='900 0 810 150 990 150'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='0 300 -90 450 90 450'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='0 300 90 150 -90 150'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='180 300 90 450 270 450'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='180 300 270 150 90 150'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='360 300 270 450 450 450'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='360 300 450 150 270 150'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='540 300 450 450 630 450'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='540 300 630 150 450 150'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='720 300 630 450 810 450'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='720 300 810 150 630 150'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='900 300 810 450 990 450'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='900 300 990 150 810 150'%3E%3C/polygon%3E%3Cpolygon points='0 600 -90 750 90 750'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='0 600 90 450 -90 450'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='180 600 90 750 270 750'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='180 600 270 450 90 450'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='360 600 270 750 450 750'%3E%3C/polygon%3E%3Cpolygon fill='%23999' points='360 600 450 450 270 450'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='540 600 630 450 450 450'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='720 600 630 750 810 750'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='900 600 810 750 990 750'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='900 600 990 450 810 450'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='0 900 90 750 -90 750'%3E%3C/polygon%3E%3Cpolygon fill='%23444' points='180 900 270 750 90 750'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='360 900 450 750 270 750'%3E%3C/polygon%3E%3Cpolygon fill='%23AAA' points='540 900 630 750 450 750'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='720 900 810 750 630 750'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='900 900 990 750 810 750'%3E%3C/polygon%3E%3Cpolygon fill='%23222' points='1080 300 990 450 1170 450'%3E%3C/polygon%3E%3Cpolygon fill='%23FFF' points='1080 300 1170 150 990 150'%3E%3C/polygon%3E%3Cpolygon points='1080 600 990 750 1170 750'%3E%3C/polygon%3E%3Cpolygon fill='%23666' points='1080 600 1170 450 990 450'%3E%3C/polygon%3E%3Cpolygon fill='%23DDD' points='1080 900 1170 750 990 750'%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E");
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,224L48,208C96,192,192,160,288,165.3C384,171,480,213,576,240C672,267,768,277,864,250.7C960,224,1056,160,1152,144C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(14, 165, 233, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 8px;
+            background: var(--primary-gradient);
+            border-radius: 0 16px 16px 0;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            background: var(--primary-gradient);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .card-icon:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 30%, rgba(255, 255, 255, 0.1) 70%);
+            top: 0;
+            left: 0;
+        }
+
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+        /* Style for the flats container */
+        #flats-calculation-group {
+            border: 1px dashed var(--primary-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            background-color: var(--background-alt);
+            display: none; /* Hidden by default */
+        }
+        #flats-calculation-group .form-group {
+            margin-bottom: 15px; /* Adjust spacing inside */
+        }
+        #flats-calculation-group .form-group:last-child {
+            margin-bottom: 0;
+        }
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+        .form-check-input {
+            width: 1.3em;
+            height: 1.3em;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+        .form-check-label {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background-color: var(--card);
+            color: var(--text);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:hover {
+            border-color: var(--primary-light);
+        }
+        .form-control:disabled {
+            background-color: var(--background-alt);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231e293b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            color: white;
+            background: var(--primary-gradient);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-primary:hover:before {
+            left: 100%;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .error-message {
+            color: var(--danger);
+            background-color: var(--danger-light);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .result-card {
+            display: none;
+        }
+
+        .result-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 30px;
+            border-radius: 16px 16px 0 0;
+            margin: -30px -30px 30px -30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.1);
+        }
+
+        .result-header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,128L48,122.7C96,117,192,107,288,122.7C384,139,480,181,576,181.3C672,181,768,139,864,149.3C960,160,1056,224,1152,218.7C1248,213,1344,139,1392,101.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 8px;
+        }
+
+        .result-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+            font-weight: 300;
+        }
+
+        .info-group {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--primary-light);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(14, 165, 233, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .info-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-gradient);
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+        }
+        .info-value-small { 
+             font-size: 1.1rem;
+             font-weight: 500;
+             color: var(--secondary);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 30px 0 20px 0;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 3px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-sm);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary-gradient);
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        th:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+            background-color: var(--card);
+        }
+
+        tbody tr:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(14, 165, 233, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .total-row {
+            font-weight: 600;
+            color: var(--secondary);
+            background-color: var(--background);
+        }
+
+        .final-total {
+            background-color: var(--success-light);
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .badge-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, var(--success), #34d399);
+            color: white;
+        }
+
+        .badge-accent {
+            background: linear-gradient(135deg, var(--accent), #a78bfa);
+            color: white;
+        }
+         .badge-info {
+             background: linear-gradient(135deg, #60a5fa, #3b82f6); 
+             color: white;
+         }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .footer:before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: calc(50% - 100px);
+            width: 200px;
+            height: 10px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            filter: blur(3px);
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                padding: 20px;
+            }
+
+            .result-header {
+                margin: -20px -20px 20px -20px;
+            }
+
+            .info-item {
+                min-width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes waterRipple {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .animate-water {
+            animation: waterRipple 4s ease-in-out infinite;
+        }
+
+        .loading {
+            position: relative;
+        }
+
+        .loading:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                rgba(255,255,255, 0) 0%,
+                rgba(255,255,255, 0.6) 50%,
+                rgba(255,255,255, 0) 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        /* --- End of CSS --- */
+    </style>
+
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <h1>Water Bill Calculator</h1>
+            <p>Calculate your water bill based on consumption, category, and tap size</p>
+        </div>
+
+        <!-- Input Card -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon animate-water">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3.571c3.658 5.437 6 9.223 6 12.503 0 3.268-2.691 5.926-6 5.926s-6-2.658-6-5.925c0-3.281 2.341-7.067 6-12.504zm0-3.571c-4.87 7.197-8 11.699-8 16.075 0 4.378 3.579 7.925 8 7.925s8-3.547 8-7.925c0-4.376-3.13-8.878-8-16.075z"/></svg>
+                </div>
+                <h2 class="card-title">Input Details</h2>
+            </div>
+            <div class="form-group">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" class="form-control form-select">
+                    <option value="R1">R1 - Residential</option>
+                    <option value="IA">IA - Industrial A</option>
+                    <option value="IB">IB - Industrial B</option>
+                    <option value="C1A">C1A - Commercial 1A</option>
+                    <option value="C1B">C1B - Commercial 1B</option>
+                    <option value="C2">C2 - Commercial 2</option>
+                    <option value="Slum">Slum</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tapSize" class="form-label">Tap Size (mm)</label>
+                <select id="tapSize" class="form-control form-select">
+                    {/* Options will be populated by JS */}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="consumption" class="form-label">Total Consumption (Units)</label>
+                <input type="number" id="consumption" class="form-control" min="0" step="any" value="0">
+            </div>
+            <div class="form-group">
+                <label for="months" class="form-label">Billing Period (Months)</label>
+                <input type="number" id="months" class="form-control" min="1" step="1" value="1">
+            </div>
+
+            <!-- START: Residential Flats Section (Hidden by default) -->
+            <div id="flats-calculation-group">
+                 <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="useFlats">
+                    <label class="form-check-label" for="useFlats">
+                        Residential Flats (If Appartment, For R1 Only)
+                    </label>
+                </div>
+                 <div class="form-group">
+                    <label for="numberOfFlats" class="form-label">Number of Residential Flats</label>
+                    <input type="number" id="numberOfFlats" class="form-control" min="1" step="1" value="1" disabled>
+                 </div>
+            </div>
+            <!-- END: Residential Flats Section -->
+
+            <button id="calculate" class="btn btn-primary btn-block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="0.5" style="margin-right: 8px; vertical-align: -3px;"><path d="M12 3.571c3.658 5.437 6 9.223 6 12.503 0 3.268-2.691 5.926-6 5.926s-6-2.658-6-5.925c0-3.281 2.341-7.067 6-12.504zm0-3.571c-4.87 7.197-8 11.699-8 16.075 0 4.378 3.579 7.925 8 7.925s8-3.547 8-7.925c0-4.376-3.13-8.878-8-16.075z"/></svg>
+                Calculate Bill
+            </button>
+            <div id="loading-indicator" style="display: none; text-align: center; margin-top: 20px;">
+                 <div class="animate-water" style="display: inline-block; width: 60px; height: 60px;">
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 100%; height: 100%; fill: var(--primary);"><path d="M12 3.571c3.658 5.437 6 9.223 6 12.503 0 3.268-2.691 5.926-6 5.926s-6-2.658-6-5.925c0-3.281 2.341-7.067 6-12.504zm0-3.571c-4.87 7.197-8 11.699-8 16.075 0 4.378 3.579 7.925 8 7.925s8-3.547 8-7.925c0-4.376-3.13-8.878-8-16.075z"/></svg>
+                </div>
+                <p style="color: var(--primary); margin-top: 10px; font-weight: 500;">Calculating your bill...</p>
+            </div>
+            <div id="error" class="error-message"></div>
+        </div>
+
+        <!-- Result Card -->
+        <div id="result" class="card result-card">
+            <div class="result-header">
+                <h2 class="result-title">Bill Calculation Results</h2>
+                <p class="result-subtitle">Detailed breakdown of your water bill</p>
+            </div>
+            <div id="result-content">
+                {/* Content will be generated by JS */}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Created By Mr. Pritam Chaudhary
+        </div>
+    </div>
+
+    <script>
+        // Tariff data 
+        const tariffs = {
+            "R1": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "IA": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 23.34 }, { range: "21-80", limit: 80, rate: 26.95 }, { range: "Above 80", limit: Infinity, rate: 32.33 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "IB": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 26.95 }, { range: "21-80", limit: 80, rate: 30.52 }, { range: "Above 80", limit: Infinity, rate: 35.93 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "C1A": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 62.86 }, { range: "Above 80", limit: Infinity, rate: 80.79 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "C1B": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 89.80 }, { range: "Above 80", limit: Infinity, rate: 134.69 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "C2": { minUnit: 10, slabs: [{ range: "1-30", limit: 30, rate: 107.76 }, { range: "31-100", limit: 100, rate: 323.26 }, { range: "Above 100", limit: Infinity, rate: 969.78 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "Slum": { minUnit: 15, slabs: [{ range: "1-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } }
+        };
+
+        // Minimum Bill data 
+        const minimumBills = {
+            "R1": { "15": 89.80, "20": 179.59, "25": 323.26, "40": 915.9, "50": 1445.65, "80": 3196.62, "100": 4947.6, "150": 10604.53, "200": 18685.9, "250": 29056.94, "300": 41717.74 },
+            "IA": { "15": 233.49, "20": 466.91, "25": 736.32, "40": 1544.46, "50": 2244.82, "80": 4345.97, "100": 6447.12, "150": 13235.48, "200": 22933.09, "250": 35378.35, "300": 50571.32 },
+            "IB": { "15": 269.38, "20": 538.75, "25": 844.05, "40": 1759.93, "50": 2550.12, "80": 4884.73, "100": 7219.35, "150": 14761.93, "200": 25537.1, "250": 39365.19, "300": 56246.23 },
+            "C1A": { "15": 448.96, "20": 897.93, "25": 1526.49, "40": 3412.12, "50": 5073.28, "80": 10326.19, "100": 15579.07, "150": 32549.9, "200": 56793.94, "250": 87907.18, "300": 125889.54 },
+            "C1B": { "15": 448.96, "20": 897.93, "25": 1795.86, "40": 4489.64, "50": 6958.95, "80": 15713.73, "100": 24468.54, "150": 52753.3, "200": 93160.06, "250": 145015.4, "300": 208319.34 },
+            "C2": { "15": 1077.5, "20": 2155.03, "25": 3232.56, "40": 12930.16, "50": 21011.51, "80": 74348.45, "100": 137383.02, "150": 341033.12, "200": 631961.83, "250": 1005320.4, "300": 1461108.71 },
+            "Slum": { "15": 53.87 }
+        };
+
+        // formatCurrency function 
+        function formatCurrency(value) {
+            const numValue = typeof value === 'string' ? parseFloat(value) : value;
+            if (isNaN(numValue)) return 'N/A';
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(numValue);
+        }
+
+        // calculateBill function 
+        function calculateBill(category, totalConsumption, months, tapSize, useFlats, numberOfFlats) {
+            // Basic validation (parameter level)
+            if (!tariffs[category] || !minimumBills[category] || totalConsumption < 0 || months <= 0) {
+                return { error: "Invalid input parameters..." };
+            }
+            if (useFlats && (isNaN(numberOfFlats) || numberOfFlats < 1)) {
+                 return { error: "Number of flats must be 1 or more when 'Calculate per Flat' is enabled." };
+            }
+
+            const tariff = tariffs[category];
+            const categoryMinimumBills = minimumBills[category];
+            const baseMinimumBill = categoryMinimumBills ? categoryMinimumBills[tapSize] : undefined;
+
+            if (baseMinimumBill === undefined) {
+                return { error: `Minimum bill data not found for Category ${category}, Tap Size ${tapSize}mm.` };
+            }
+
+            // Determine the consumption basis for slab calculation
+            let consumptionForSlabs;
+            let calculationBasis = "Total"; // Default
+            if (useFlats && category === "R1" && numberOfFlats > 0) {
+                consumptionForSlabs = totalConsumption / numberOfFlats;
+                calculationBasis = `Per Flat (${numberOfFlats} flats)`;
+            } else {
+                consumptionForSlabs = totalConsumption;
+            }
+
+            const monthlyConsumption = consumptionForSlabs / months;
+            let monthlyBaseBill = 0;
+            let slabBreakdown = [];
+            let remainingConsumption = monthlyConsumption;
+            let previousLimit = 0;
+
+            // Calculate slab-wise cost based on monthlyConsumption
+            for (const slab of tariff.slabs) {
+                const slabRange = slab.limit - previousLimit;
+                const consumptionInSlab = Math.min(remainingConsumption, slabRange);
+
+                if (consumptionInSlab > 0) {
+                    const slabCost = consumptionInSlab * slab.rate;
+                    monthlyBaseBill += slabCost;
+                    slabBreakdown.push({
+                        range: slab.range,
+                        rate: slab.rate,
+                        consumption: consumptionInSlab,
+                        cost: slabCost
+                    });
+                    remainingConsumption -= consumptionInSlab;
+                }
+
+                if (remainingConsumption <= 0) break;
+                previousLimit = slab.limit;
+            }
+
+            // Determine effective monthly bill (handling minimums)
+            let effectiveMonthlyBillPerUnit; // This is per month, per flat (if applicable) or per connection (if not)
+            let minimumBillApplied = false;
+            let appliedMinimumBillValue = null;
+
+            if (category === "Slum") {
+                // Slum category has special minimum rules based on consumption, not tap size directly here
+                const slumThreshold1 = 15; const slumMinBill1 = 53.87;
+                const slumThreshold2 = 20; const slumMinBill2 = 89.80;
+                if (monthlyConsumption < slumThreshold1) {
+                    effectiveMonthlyBillPerUnit = slumMinBill1;
+                    minimumBillApplied = true;
+                    appliedMinimumBillValue = slumMinBill1;
+                } else if (monthlyConsumption < slumThreshold2) {
+                    effectiveMonthlyBillPerUnit = slumMinBill2;
+                    minimumBillApplied = true;
+                    appliedMinimumBillValue = slumMinBill2;
+                } else {
+                    effectiveMonthlyBillPerUnit = monthlyBaseBill; // Use calculated bill
+                    minimumBillApplied = false;
+                }
+            } else {
+                // For other categories, compare calculated monthly bill with tap size minimum
+                effectiveMonthlyBillPerUnit = Math.max(monthlyBaseBill, baseMinimumBill);
+                minimumBillApplied = monthlyBaseBill < baseMinimumBill;
+                if (minimumBillApplied) {
+                    appliedMinimumBillValue = baseMinimumBill;
+                }
+            }
+
+            // Calculate total bill before surcharges
+            let totalBillBeforeSurcharges;
+            if (useFlats && category === "R1" && numberOfFlats > 0) {
+                // Scale up the per-flat monthly bill by number of flats and months
+                totalBillBeforeSurcharges = effectiveMonthlyBillPerUnit * numberOfFlats * months;
+            } else {
+                // Just scale the monthly bill by months
+                totalBillBeforeSurcharges = effectiveMonthlyBillPerUnit * months;
+            }
+
+            // Surcharges are ALWAYS based on TOTAL consumption
+            const electricitySurcharge = totalConsumption * tariff.surcharges.electricity;
+            const rawWaterSurcharge = totalConsumption * tariff.surcharges.rawWater;
+
+            // Final total bill
+            const finalTotalBill = totalBillBeforeSurcharges + electricitySurcharge + rawWaterSurcharge;
+
+            return {
+                categoryDetails: {
+                    category,
+                    tapSize,
+                    minUnit: tariff.minUnit,
+                    minimumBill: baseMinimumBill // The base minimum for the tap size
+                },
+                consumption: {
+                    total: totalConsumption,
+                    monthlyPerUnit: monthlyConsumption.toFixed(2), // Monthly consumption used for slabs (could be per flat)
+                    calculationBasis: calculationBasis,
+                    numberOfFlats: (useFlats && category === "R1" && numberOfFlats > 0) ? numberOfFlats : null
+                },
+                billing: {
+                    monthlyBaseBillPerUnit: monthlyBaseBill.toFixed(2), // Calculated from slabs (per flat or per connection)
+                    effectiveMonthlyBillPerUnit: effectiveMonthlyBillPerUnit.toFixed(2), // After minimum rules (per flat or per connection)
+                    minimumBillApplied,
+                    appliedMinimumBillValue,
+                    months,
+                    totalBillBeforeSurcharges: totalBillBeforeSurcharges.toFixed(2)
+                },
+                surcharges: {
+                    electricity: { rate: tariff.surcharges.electricity, amount: electricitySurcharge.toFixed(2) },
+                    rawWater: { rate: tariff.surcharges.rawWater, amount: rawWaterSurcharge.toFixed(2) }
+                },
+                slabBreakdown, // Based on monthlyConsumptionPerUnit
+                finalTotalBill: finalTotalBill.toFixed(2)
+            };
+        }
+
+        // --- DOM Element References ---
+        const categorySelect = document.getElementById('category');
+        const tapSizeSelect = document.getElementById('tapSize');
+        const consumptionInput = document.getElementById('consumption');
+        const monthsInput = document.getElementById('months');
+        const useFlatsCheckbox = document.getElementById('useFlats');
+        const numberOfFlatsInput = document.getElementById('numberOfFlats');
+        const flatsCalculationGroup = document.getElementById('flats-calculation-group');
+        const calculateButton = document.getElementById('calculate');
+        const errorElement = document.getElementById('error');
+        const resultElement = document.getElementById('result');
+        const resultContentElement = document.getElementById('result-content');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+
+        // --- Event Listeners ---
+
+        // Calculate Button Click
+        calculateButton.addEventListener('click', function() {
+            const category = categorySelect.value;
+            const tapSize = tapSizeSelect.value;
+            const consumption = parseFloat(consumptionInput.value);
+            const months = parseInt(monthsInput.value);
+            const useFlats = useFlatsCheckbox.checked;
+            const numberOfFlats = parseInt(numberOfFlatsInput.value);
+
+            errorElement.textContent = ''; errorElement.style.display = 'none';
+            resultElement.style.display = 'none'; loadingIndicator.style.display = 'block';
+
+            // --- Input Validations ---
+             if (isNaN(consumption) || consumption < 0) {
+                 errorElement.textContent = 'Please enter a valid non-negative Total Consumption.';
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+             }
+             if (isNaN(months) || months < 1) {
+                 errorElement.textContent = 'Billing Period (Months) must be 1 or more.';
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+             }
+             if (!minimumBills[category] || minimumBills[category][tapSize] === undefined) {
+                 errorElement.textContent = `Invalid tap size (${tapSize}mm) selected for category ${category}. Please select a valid size.`;
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+             }
+             // Validate flats input ONLY if the checkbox is checked
+             if (useFlats && (isNaN(numberOfFlats) || numberOfFlats < 1)) {
+                 errorElement.textContent = 'Please enter a valid Number of Residential Flats (1 or more) when calculating per flat.';
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+             }
+
+            // --- Call calculateBill ---
+            const result = calculateBill(category, consumption, months, tapSize, useFlats, numberOfFlats);
+
+            // Handle calculation error returned by the function
+            if (result.error) {
+                errorElement.textContent = result.error;
+                errorElement.style.display = 'block';
+                loadingIndicator.style.display = 'none';
+                return;
+            }
+
+            // --- Build Result HTML ---
+            let html = `
+                <div class="info-group">
+                    <div class="info-item"><div class="info-label">Category</div><div class="info-value">${result.categoryDetails.category}</div></div>
+                    <div class="info-item"><div class="info-label">Tap Size</div><div class="info-value">${result.categoryDetails.tapSize} mm</div></div>
+                    <div class="info-item"><div class="info-label">Total Consumption</div><div class="info-value">${result.consumption.total} Units</div></div>
+                     <div class="info-item">
+                         <div class="info-label">Monthly Avg. Consumption</div>
+                         <div class="info-value">${result.consumption.monthlyPerUnit} Units</div>
+                         <div class="info-value-small" style="margin-top: 5px;">Basis: ${result.consumption.calculationBasis}</div>
+                     </div>
+                    <div class="info-item"><div class="info-label">Billing Period</div><div class="info-value">${result.billing.months} Month(s)</div></div>
+                </div>
+
+                <h3 class="section-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    Slab-wise Breakdown (Monthly ${result.consumption.calculationBasis === 'Total' ? 'Average' : 'Per Flat'})
+                </h3>
+                <table>
+                    <thead><tr><th>Slab Range</th><th>Rate</th><th>Consumption in Slab</th><th>Amount</th></tr></thead>
+                    <tbody>`;
+
+            result.slabBreakdown.forEach(slab => {
+                html += `<tr><td><span class="badge badge-primary">${slab.range}</span></td><td>${formatCurrency(slab.rate)}</td><td>${slab.consumption.toFixed(2)} Units</td><td>${formatCurrency(slab.cost)}</td></tr>`;
+            });
+
+             // Show the calculated base bill (per unit - flat or connection)
+            html += `<tr class="total-row"><td colspan="3">Calculated Monthly Base Bill (${result.consumption.calculationBasis === 'Total' ? 'per Connection' : 'per Flat'})</td><td>${formatCurrency(result.billing.monthlyBaseBillPerUnit)}</td></tr>`;
+
+            // Show minimum bill if applied
+            if (result.billing.minimumBillApplied) {
+                let minBillText = `Minimum Bill Applied`;
+                if(result.categoryDetails.category !== "Slum") {
+                   minBillText += ` (for ${result.categoryDetails.tapSize}mm tap)`;
+                } else {
+                    minBillText += ` (Slum Rule)`; // Clarify slum rule
+                }
+                html += `
+                    <tr>
+                        <td colspan="3">
+                            <span class="badge badge-accent">${minBillText}</span>
+                        </td>
+                        <td>${formatCurrency(result.billing.appliedMinimumBillValue)}</td>
+                    </tr>
+                `;
+            }
+
+            // Show the effective monthly bill (per unit - flat or connection) after minimums
+            html += `<tr class="total-row"><td colspan="3">Effective Monthly Bill (${result.consumption.calculationBasis === 'Total' ? 'per Connection' : 'per Flat'})</td><td>${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)}</td></tr>`;
+            html += `</tbody></table>`;
+
+
+            // --- Final Calculation Section ---
+            html += `
+                <h3 class="section-title">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M19 5H5v14h14V5zM9 17H7m10-2h-4"></path></svg>
+                     Total Bill Calculation (${result.billing.months} Month(s))
+                </h3>
+                <table>
+                    <thead><tr><th>Component</th><th>Calculation</th><th>Amount</th></tr></thead>
+                    <tbody>`;
+
+             // Explain the total base bill calculation clearly
+            let baseBillCalcText = `${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} × ${result.billing.months} month(s)`;
+             if(result.consumption.calculationBasis !== 'Total' && result.consumption.numberOfFlats) {
+                 baseBillCalcText = `(${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} per flat × ${result.consumption.numberOfFlats} flats) × ${result.billing.months} month(s)`;
+             }
+            html += `<tr><td>Total Base Bill</td><td>${baseBillCalcText}</td><td>${formatCurrency(result.billing.totalBillBeforeSurcharges)}</td></tr>`;
+
+             // Surcharges
+            html += `   <tr><td>Electricity Surcharge</td><td>${formatCurrency(result.surcharges.electricity.rate)} × ${result.consumption.total} total units</td><td>${formatCurrency(result.surcharges.electricity.amount)}</td></tr>
+                        <tr><td>Raw Water Surcharge</td><td>${formatCurrency(result.surcharges.rawWater.rate)} × ${result.consumption.total} total units</td><td>${formatCurrency(result.surcharges.rawWater.amount)}</td></tr>
+                        <tr class="total-row final-total"><td colspan="2">Final Total Bill</td><td><span class="badge badge-success">${formatCurrency(result.finalTotalBill)}</span></td></tr>
+                    </tbody>
+                </table>`;
+
+            // --- Display Results ---
+            setTimeout(() => {
+                loadingIndicator.style.display = 'none';
+                resultContentElement.innerHTML = html;
+                resultElement.classList.remove('animate-fade-in');
+                resultElement.style.display = 'block';
+                resultElement.classList.add('animate-fade-in');
+                resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 800); // Simulate calculation time
+        });
+
+        // Category Change Listener (Updates Tap Sizes AND Flat Calculation Visibility)
+        categorySelect.addEventListener('change', function() {
+            const selectedCategory = this.value;
+            const currentTapSizeValue = tapSizeSelect.value; // Remember current selection
+            let newSelectedValue = null;
+
+            // Update Tap Sizes
+            const validTapSizes = minimumBills[selectedCategory] ? Object.keys(minimumBills[selectedCategory]) : [];
+            tapSizeSelect.innerHTML = ''; // Clear existing options
+
+            if (validTapSizes.length > 0) {
+                validTapSizes.forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = `${size} mm`; // Add units for clarity
+                    tapSizeSelect.appendChild(option);
+                    // Try to re-select the previously selected size if valid for new category
+                    if (size === currentTapSizeValue) {
+                        newSelectedValue = size;
+                    }
+                });
+                // Set the value after adding all options
+                tapSizeSelect.value = newSelectedValue || validTapSizes[0]; // Default to first valid or re-selected
+                tapSizeSelect.disabled = false;
+            } else {
+                const option = document.createElement('option');
+                option.value = "";
+                option.textContent = "N/A for this category";
+                option.disabled = true;
+                tapSizeSelect.appendChild(option);
+                tapSizeSelect.disabled = true;
+            }
+
+             // Show/Hide Flats Calculation Section
+             if (selectedCategory === 'R1') {
+                 flatsCalculationGroup.style.display = 'block';
+                 // Enable checkbox (flat number input enabled/disabled by checkbox state)
+                 useFlatsCheckbox.disabled = false;
+             } else {
+                 flatsCalculationGroup.style.display = 'none';
+                 // Disable and uncheck flats option if category is not R1
+                 useFlatsCheckbox.checked = false;
+                 useFlatsCheckbox.disabled = true;
+                 numberOfFlatsInput.disabled = true; // Ensure number input is disabled too
+                 numberOfFlatsInput.value = '1'; // Reset to default
+             }
+        });
+
+        // Flats Checkbox Listener (Enables/Disables Number of Flats Input)
+         useFlatsCheckbox.addEventListener('change', function() {
+             if (this.checked) {
+                 numberOfFlatsInput.disabled = false;
+                 numberOfFlatsInput.focus(); // Optional: focus the input
+             } else {
+                 numberOfFlatsInput.disabled = true;
+                 numberOfFlatsInput.value = '1'; // Reset to default when unchecked
+             }
+         });
+
+        // --- Initial Setup ---
+        // Trigger category change on page load to set initial tap sizes and flat visibility
+        categorySelect.dispatchEvent(new Event('change'));
+        // Ensure flat number input is initially disabled as checkbox is unchecked
+        numberOfFlatsInput.disabled = true;
+
+    </script>
+</body>
+</html>
