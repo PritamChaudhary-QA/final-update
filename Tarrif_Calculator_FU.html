@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Bill Calculator</title>
+    <title data-translate-key="pageTitle">Water Bill Calculator</title>
     <style>
         
         :root {
@@ -171,7 +172,6 @@
         .form-group {
             margin-bottom: 25px;
         }
-        /* Style for the flats container */
         #flats-calculation-group {
             border: 1px dashed var(--primary-light);
             border-radius: 8px;
@@ -179,10 +179,10 @@
             margin-top: 20px;
             margin-bottom: 25px;
             background-color: var(--background-alt);
-            display: none; /* Hidden by default */
+            display: none; 
         }
         #flats-calculation-group .form-group {
-            margin-bottom: 15px; /* Adjust spacing inside */
+            margin-bottom: 15px; 
         }
         #flats-calculation-group .form-group:last-child {
             margin-bottom: 0;
@@ -293,6 +293,22 @@
         .btn-primary:hover:before {
             left: 100%;
         }
+
+        .btn-secondary {
+            color: var(--secondary);
+            background-color: var(--background-alt);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
 
         .btn-block {
             display: block;
@@ -543,6 +559,60 @@
             filter: blur(3px);
         }
 
+        /* --- Tips Section Styles --- */
+        .tips-container .card-icon { /* Customizing icon for tips */
+            background: var(--accent-light); /* A lighter, distinct background for the icon */
+            border: 1px solid var(--accent); /* Border that matches accent color */
+        }
+        .tips-container .card-icon svg {
+            fill: var(--accent); /* Icon color to match accent */
+        }
+        /* Remove the default right-side bar from the tips card */
+        .tips-container::after {
+            display: none;
+        }
+
+        .tip-item-collapsible {
+            /* Spacing handled by card padding and internal margins/paddings */
+        }
+        .tip-item-collapsible:not(:last-child) {
+             border-bottom: 1px solid var(--border); /* Separator line between tip items */
+             margin-bottom: 15px; /* Space after the border before next tip header */
+             padding-bottom: 15px; /* Space before the border */
+        }
+        
+        .tip-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        .tip-item-header strong {
+            font-size: 1.05rem; 
+            color: var(--primary-dark);
+        }
+        .tip-toggle-icon {
+            color: var(--primary);
+            transition: transform 0.2s ease-in-out;
+            font-size: 1rem; 
+            margin-left: 10px;
+        }
+        .tip-item-content {
+            padding-top: 10px; /* Space from its header */
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .tip-item-content p {
+            margin-bottom: 0;
+        }
+        .tip-item-collapsible.open .tip-toggle-icon {
+            transform: rotate(90deg);
+        }
+
+
         @media (max-width: 768px) {
             .card {
                 padding: 20px;
@@ -557,7 +627,6 @@
             }
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -600,99 +669,124 @@
             background-size: 1000px 100%;
             animation: shimmer 2s infinite;
         }
-        /* --- End of CSS --- */
     </style>
 
 <body>
     <div class="container">
+         <div style="text-align: right; margin-bottom: 15px; position: relative; z-index: 10;">
+            <label for="language-switcher" style="margin-right: 8px; font-weight: 500; color: var(--secondary);" data-translate-key="languageLabel">Language:</label>
+            <select id="language-switcher" class="form-control form-select" style="display: inline-block; width: auto; padding: 8px 30px 8px 12px;">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="mr">मराठी (Marathi)</option>
+            </select>
+        </div>
         
         <div class="header">
-            <h1>Water Bill Calculator</h1>
-            <p>Calculate your water bill based on consumption, category, and tap size</p>
+            <h1 data-translate-key="headerTitle">Water Bill Calculator</h1>
+            <p data-translate-key="headerSubtitle">Calculate your water bill based on consumption, category, and tap size</p>
         </div>
 
-        <!-- Input Card -->
         <div class="card">
             <div class="card-header">
                 <div class="card-icon animate-water">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3.571c3.658 5.437 6 9.223 6 12.503 0 3.268-2.691 5.926-6 5.926s-6-2.658-6-5.925c0-3.281 2.341-7.067 6-12.504zm0-3.571c-4.87 7.197-8 11.699-8 16.075 0 4.378 3.579 7.925 8 7.925s8-3.547 8-7.925c0-4.376-3.13-8.878-8-16.075z"/></svg>
                 </div>
-                <h2 class="card-title">Input Details</h2>
+                <h2 class="card-title" data-translate-key="inputDetailsTitle">Input Details</h2>
             </div>
             <div class="form-group">
-                <label for="category" class="form-label">Category</label>
+                <label for="category" class="form-label" data-translate-key="categoryLabel">Category</label>
                 <select id="category" class="form-control form-select">
-                    <option value="R1">R1 - Residential</option>
-                    <option value="IA">IA - Institutional A</option>
-                    <option value="IB">IB - Institutional B</option>
-                    <option value="C1A">C1A - Commercial 1A</option>
-                    <option value="C1B">C1B - Commercial 1B</option>
-                    <option value="C2">C2 - Commercial 2</option>
-                    <option value="Slum">Slum</option>
+                    <option value="R1" data-translate-key="catR1">R1 - Residential</option>
+                    <option value="IA" data-translate-key="catIA">IA - Institutional A</option>
+                    <option value="IB" data-translate-key="catIB">IB - Institutional B</option>
+                    <option value="C1A" data-translate-key="catC1A">C1A - Commercial 1A</option>
+                    <option value="C1B" data-translate-key="catC1B">C1B - Commercial 1B</option>
+                    <option value="C2" data-translate-key="catC2">C2 - Commercial 2</option>
+                    <option value="Slum Hut" data-translate-key="catSlumHut">Slum Hut</option>
+                    <option value="Slum RCC" data-translate-key="catSlumRCC">Slum RCC</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="tapSize" class="form-label">Tap Size (mm)</label>
+                <label for="tapSize" class="form-label" data-translate-key="tapSizeLabel">Tap Size (mm)</label>
                 <select id="tapSize" class="form-control form-select">
-                    {/* Options will be populated by JS */}
                 </select>
             </div>
             <div class="form-group">
-                <label for="consumption" class="form-label">Total Consumption (Units)</label>
-                <input type="number" id="consumption" class="form-control" min="0" step="any" value="0">
+                <label for="consumption" class="form-label" data-translate-key="consumptionLabel">Total Consumption (Units)</label>
+                <input type="number" id="consumption" class="form-control" min="0" step="any" value="0" placeholder="Enter consumption" data-translate-key-placeholder="consumptionPlaceholder">
             </div>
             <div class="form-group">
-                <label for="months" class="form-label">Billing Period (Months)</label>
+                <label for="months" class="form-label" data-translate-key="monthsLabel">Billing Period (Months)</label>
                 <input type="number" id="months" class="form-control" min="1" step="1" value="1">
             </div>
 
-            <!-- START: Residential Flats Section (Hidden by default) -->
             <div id="flats-calculation-group">
                  <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="useFlats">
-                    <label class="form-check-label" for="useFlats">
+                    <label class="form-check-label" for="useFlats" data-translate-key="useFlatsLabel">
                         Residential Flats (If Appartment, For R1 Only)
                     </label>
                 </div>
                  <div class="form-group">
-                    <label for="numberOfFlats" class="form-label">Number of Residential Flats</label>
+                    <label for="numberOfFlats" class="form-label" data-translate-key="numberOfFlatsLabel">Number of Residential Flats</label>
                     <input type="number" id="numberOfFlats" class="form-control" min="1" step="1" value="1" disabled>
                  </div>
             </div>
-            <!-- END: Residential Flats Section -->
 
             <button id="calculate" class="btn btn-primary btn-block">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="0.5" style="margin-right: 8px; vertical-align: -3px;"><path d="M12 3.571c3.658 5.437 6 9.223 6 12.503 0 3.268-2.691 5.926-6 5.926s-6-2.658-6-5.925c0-3.281 2.341-7.067 6-12.504zm0-3.571c-4.87 7.197-8 11.699-8 16.075 0 4.378 3.579 7.925 8 7.925s8-3.547 8-7.925c0-4.376-3.13-8.878-8-16.075z"/></svg>
-                Calculate Bill
+                <span data-translate-key="calculateButton">Calculate Bill</span>
             </button>
+            
             <div id="loading-indicator" style="display: none; text-align: center; margin-top: 20px;">
                  <div class="animate-water" style="display: inline-block; width: 60px; height: 60px;">
                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 100%; height: 100%; fill: var(--primary);"><path d="M12 3.571c3.658 5.437 6 9.223 6 12.503 0 3.268-2.691 5.926-6 5.926s-6-2.658-6-5.925c0-3.281 2.341-7.067 6-12.504zm0-3.571c-4.87 7.197-8 11.699-8 16.075 0 4.378 3.579 7.925 8 7.925s8-3.547 8-7.925c0-4.376-3.13-8.878-8-16.075z"/></svg>
                 </div>
-                <p style="color: var(--primary); margin-top: 10px; font-weight: 500;">Calculating your bill...</p>
+                <p style="color: var(--primary); margin-top: 10px; font-weight: 500;" data-translate-key="loadingText">Calculating your bill...</p>
             </div>
             <div id="error" class="error-message"></div>
         </div>
 
-        <!-- Result Card -->
+        <div class="card tips-container">
+            <div class="card-header">
+                <div class="card-icon">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--accent)" width="24" height="24">
+                        <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/>
+                        <path d="M11 11h2v6h-2zm0-4h2v2h-2z"/>
+                    </svg>
+                </div>
+                <h2 class="card-title" data-translate-key="tipsSectionTitleOverall">Helpful Tips</h2>
+            </div>
+
+            <div class="tip-item-collapsible">
+                <div class="tip-item-header" data-toggle-tip="averageBillTipContent">
+                    <strong data-translate-key="tipAverageBillLabel">Average Bill</strong>
+                    <span class="tip-toggle-icon">▶</span>
+                </div>
+                <div class="tip-item-content" id="averageBillTipContent" style="display: none;">
+                    <p data-translate-key="tipAverageBillDescription">If for some reason your premises' meter reading could not be collected, such as the house being locked, meter stopped, meter tampered with, meter buried in soil or concrete, or submerged in water, an Average Bill is considered in these conditions. This is based on your previous consumption.</p>
+                </div>
+            </div>
+            <!-- Future tips can be added here as more .tip-item-collapsible blocks -->
+        </div>
+
+
         <div id="result" class="card result-card">
             <div class="result-header">
-                <h2 class="result-title">Bill Calculation Results</h2>
-                <p class="result-subtitle">Detailed breakdown of your water bill</p>
+                <h2 class="result-title" data-translate-key="resultsTitle">Bill Calculation Results</h2>
+                <p class="result-subtitle" data-translate-key="resultsSubtitle">Detailed breakdown of your water bill</p>
             </div>
             <div id="result-content">
-                {/* Content will be generated by JS */}
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
-            Created By Mr. Pritam Chaudhary
+            <span data-translate-key="footerText">Created By Mr. Pritam Chaudhary</span>
         </div>
     </div>
 
     <script>
-        // Tariff data 
         const tariffs = {
             "R1": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "IA": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 23.34 }, { range: "21-80", limit: 80, rate: 26.95 }, { range: "Above 80", limit: Infinity, rate: 32.33 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
@@ -700,10 +794,10 @@
             "C1A": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 62.86 }, { range: "Above 80", limit: Infinity, rate: 80.79 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "C1B": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 89.80 }, { range: "Above 80", limit: Infinity, rate: 134.69 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "C2": { minUnit: 10, slabs: [{ range: "1-30", limit: 30, rate: 107.76 }, { range: "31-100", limit: 100, rate: 323.26 }, { range: "Above 100", limit: Infinity, rate: 969.78 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
-            "Slum": { minUnit: 15, slabs: [{ range: "1-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } }
+            "Slum Hut": { minUnit: 15, slabs: [{ range: "1-15", limit: 15, rate: 3.591 }, { range: "15-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "Slum RCC": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 4.495 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } }
         };
 
-        // Minimum Bill data 
         const minimumBills = {
             "R1": { "15": 89.80, "20": 179.59, "25": 323.26, "40": 915.9, "50": 1445.65, "80": 3196.62, "100": 4947.6, "150": 10604.53, "200": 18685.9, "250": 29056.94, "300": 41717.74 },
             "IA": { "15": 233.49, "20": 466.91, "25": 736.32, "40": 1544.46, "50": 2244.82, "80": 4345.97, "100": 6447.12, "150": 13235.48, "200": 22933.09, "250": 35378.35, "300": 50571.32 },
@@ -711,37 +805,361 @@
             "C1A": { "15": 448.96, "20": 897.93, "25": 1526.49, "40": 3412.12, "50": 5073.28, "80": 10326.19, "100": 15579.07, "150": 32549.9, "200": 56793.94, "250": 87907.18, "300": 125889.54 },
             "C1B": { "15": 448.96, "20": 897.93, "25": 1795.86, "40": 4489.64, "50": 6958.95, "80": 15713.73, "100": 24468.54, "150": 52753.3, "200": 93160.06, "250": 145015.4, "300": 208319.34 },
             "C2": { "15": 1077.5, "20": 2155.03, "25": 3232.56, "40": 12930.16, "50": 21011.51, "80": 74348.45, "100": 137383.02, "150": 341033.12, "200": 631961.83, "250": 1005320.4, "300": 1461108.71 },
-            "Slum": { "15": 53.87 }
+            "Slum Hut": { "15": 53.87 }, 
+            "Slum RCC": { "15": 89.80 }
         };
 
-        // formatCurrency function 
         function formatCurrency(value) {
             const numValue = typeof value === 'string' ? parseFloat(value) : value;
             if (isNaN(numValue)) return 'N/A';
             return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(numValue);
         }
 
-        // calculateBill function 
+        const categorySelect = document.getElementById('category');
+        const tapSizeSelect = document.getElementById('tapSize');
+        const consumptionInput = document.getElementById('consumption');
+        const monthsInput = document.getElementById('months');
+        const useFlatsCheckbox = document.getElementById('useFlats');
+        const numberOfFlatsInput = document.getElementById('numberOfFlats');
+        const flatsCalculationGroup = document.getElementById('flats-calculation-group');
+        const calculateButton = document.getElementById('calculate');
+        const errorElement = document.getElementById('error');
+        const resultElement = document.getElementById('result');
+        const resultContentElement = document.getElementById('result-content');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const languageSwitcher = document.getElementById('language-switcher');
+
+        // --- TRANSLATION LOGIC ---
+        const translations = {
+            en: {
+                pageTitle: "Water Bill Calculator",
+                languageLabel: "Language:",
+                headerTitle: "Water Bill Calculator",
+                headerSubtitle: "Calculate your water bill based on consumption, category, and tap size",
+                inputDetailsTitle: "Input Details",
+                categoryLabel: "Category",
+                catR1: "R1 - Residential",
+                catIA: "IA - Institutional A",
+                catIB: "IB - Institutional B",
+                catC1A: "C1A - Commercial 1A",
+                catC1B: "C1B - Commercial 1B",
+                catC2: "C2 - Commercial 2",
+                catSlumHut: "Slum Hut",
+                catSlumRCC: "Slum RCC",
+                tapSizeLabel: "Tap Size (mm)",
+                consumptionLabel: "Total Consumption (Units)",
+                consumptionPlaceholder: "Enter consumption",
+                monthsLabel: "Billing Period (Months)",
+                useFlatsLabel: "Residential Flats (If Appartment, For R1 Only)",
+                numberOfFlatsLabel: "Number of Residential Flats",
+                calculateButton: "Calculate Bill",
+                loadingText: "Calculating your bill...",
+                resultsTitle: "Bill Calculation Results",
+                resultsSubtitle: "Detailed breakdown of your water bill",
+                footerText: "Created By Mr. Pritam Chaudhary",
+                errorInvalidInput: "Invalid input parameters...",
+                errorFlatsNumber: "Number of flats must be 1 or more when 'Calculate per Flat' is enabled.",
+                errorMinBillDataNotFound: "Minimum bill data not found for Category {category}, Tap Size {tapSize}mm.",
+                errorInvalidConsumption: "Please enter a valid non-negative Total Consumption.",
+                errorInvalidMonths: "Billing Period (Months) must be 1 or more.",
+                errorInvalidTapSize: "Invalid tap size ({tapSize}mm) selected for category {category}. Please select a valid size.",
+                errorSelectTapSize: "Please select a tap size for {category}.",
+                errorFlatsInput: "Please enter a valid Number of Residential Flats (1 or more) when calculating per flat.",
+                resultCategory: "Category",
+                resultTapSize: "Tap Size",
+                resultTotalConsumption: "Total Consumption",
+                resultMonthlyAvgConsumption: "Monthly Avg. Consumption",
+                resultBasis: "Basis",
+                resultBillingPeriod: "Billing Period",
+                resultSlabBreakdownTitle: "Slab-wise Breakdown (Monthly {basisType})",
+                resultSlabRangeHeader: "Slab Range",
+                resultRateHeader: "Rate",
+                resultConsumptionInSlabHeader: "Consumption in Slab",
+                resultAmountHeader: "Amount",
+                resultCalcMonthlyBaseBill: "Calculated Monthly Base Bill ({basisTypeDetail})",
+                resultMinBillApplied: "Minimum Bill Applied",
+                resultMinBillSlumHut: " (Slum Hut Rule: Up to 15 Units)",
+                resultMinBillSlumRCC: " (Slum RCC Rule: Up to 20 Units)",
+                resultMinBillTapSize: " (for {tapSize}mm tap)",
+                resultMinBillGeneric: " (Minimum Rule)",
+                resultEffectiveMonthlyBill: "Effective Monthly Bill ({basisTypeDetail})",
+                resultTotalBillCalcTitle: "Total Bill Calculation ({months} Month(s))",
+                resultComponentHeader: "Component",
+                resultCalculationHeader: "Calculation",
+                resultTotalBaseBill: "Total Base Bill",
+                resultElectricitySurcharge: "Electricity Surcharge",
+                resultRawWaterSurcharge: "Raw Water Surcharge",
+                resultFinalTotalBill: "Final Total Bill",
+                resultResetButton: "Reset Inputs & Refresh",
+                naTapSize: "N/A for this category",
+                naSurchargeMinBill: "N/A (Min. Bill Applied)",
+                basisTotal: "Total",
+                basisPerFlat: "Per Flat ({numFlats} flats)",
+                basisPerConnection: "per Connection",
+                basisPerFlatSimple: "per Flat",
+                tipsSectionTitleOverall: "Helpful Tips",
+                tipAverageBillLabel: "Average Bill",
+                tipAverageBillDescription: "If for some reason your premises' meter reading could not be collected, such as the house being locked, meter stopped, meter tampered with, meter buried in soil or concrete, or submerged in water, an Average Bill is considered in these conditions. This is based on your previous consumption."
+            },
+            hi: {
+                pageTitle: "पानी बिल कैलकुलेटर",
+                languageLabel: "भाषा:",
+                headerTitle: "पानी बिल कैलकुलेटर",
+                headerSubtitle: "खपत, श्रेणी और नल के आकार के आधार पर अपने पानी के बिल की गणना करें",
+                inputDetailsTitle: "विवरण दर्ज करें",
+                categoryLabel: "श्रेणी",
+                catR1: "R1 - आवासीय",
+                catIA: "IA - संस्थागत ए",
+                catIB: "IB - संस्थागत बी",
+                catC1A: "C1A - वाणिज्यिक 1ए",
+                catC1B: "C1B - वाणिज्यिक 1बी",
+                catC2: "C2 - वाणिज्यिक 2",
+                catSlumHut: "झुग्गी झोपड़ी",
+                catSlumRCC: "झुग्गी आरसीसी",
+                tapSizeLabel: "नल का आकार (मिमी)",
+                consumptionLabel: "कुल खपत (यूनिट)",
+                consumptionPlaceholder: "खपत दर्ज करें",
+                monthsLabel: "बिलिंग अवधि (महीने)",
+                useFlatsLabel: "आवासीय फ्लैट (यदि अपार्टमेंट, केवल R1 के लिए)",
+                numberOfFlatsLabel: "आवासीय फ्लैटों की संख्या",
+                calculateButton: "बिल की गणना करें",
+                loadingText: "आपके बिल की गणना हो रही है...",
+                resultsTitle: "बिल गणना परिणाम",
+                resultsSubtitle: "आपके पानी के बिल का विस्तृत विवरण",
+                footerText: "श्री प्रीतम चौधरी द्वारा निर्मित",
+                errorInvalidInput: "अमान्य इनपुट पैरामीटर...",
+                errorFlatsNumber: "'प्रति फ्लैट गणना करें' सक्षम होने पर फ्लैटों की संख्या 1 या अधिक होनी चाहिए।",
+                errorMinBillDataNotFound: "श्रेणी {category}, नल आकार {tapSize}मिमी के लिए न्यूनतम बिल डेटा नहीं मिला।",
+                errorInvalidConsumption: "कृपया एक वैध गैर-नकारात्मक कुल खपत दर्ज करें।",
+                errorInvalidMonths: "बिलिंग अवधि (महीने) 1 या अधिक होनी चाहिए।",
+                errorInvalidTapSize: "श्रेणी {category} के लिए अमान्य नल आकार ({tapSize}मिमी) चुना गया। कृपया एक वैध आकार चुनें।",
+                errorSelectTapSize: "कृपया {category} के लिए नल का आकार चुनें।",
+                errorFlatsInput: "प्रति फ्लैट गणना करते समय कृपया आवासीय फ्लैटों की एक वैध संख्या (1 या अधिक) दर्ज करें।",
+                resultCategory: "श्रेणी",
+                resultTapSize: "नल का आकार",
+                resultTotalConsumption: "कुल खपत",
+                resultMonthlyAvgConsumption: "मासिक औसत खपत",
+                resultBasis: "आधार",
+                resultBillingPeriod: "बिलिंग अवधि",
+                resultSlabBreakdownTitle: "स्लैब-वार ब्रेकडाउन (मासिक {basisType})",
+                resultSlabRangeHeader: "स्लैब रेंज",
+                resultRateHeader: "दर",
+                resultConsumptionInSlabHeader: "स्लैब में खपत",
+                resultAmountHeader: "राशि",
+                resultCalcMonthlyBaseBill: "गणना की गई मासिक आधार बिल ({basisTypeDetail})",
+                resultMinBillApplied: "न्यूनतम बिल लागू",
+                resultMinBillSlumHut: " (झुग्गी झोपड़ी नियम: 15 यूनिट तक)",
+                resultMinBillSlumRCC: " (झुग्गी आरसीसी नियम: 20 यूनिट तक)",
+                resultMinBillTapSize: " ({tapSize}मिमी नल के लिए)",
+                resultMinBillGeneric: " (न्यूनतम नियम)",
+                resultEffectiveMonthlyBill: "प्रभावी मासिक बिल ({basisTypeDetail})",
+                resultTotalBillCalcTitle: "कुल बिल गणना ({months} माह)",
+                resultComponentHeader: "घटक",
+                resultCalculationHeader: "गणना",
+                resultTotalBaseBill: "कुल आधार बिल",
+                resultElectricitySurcharge: "बिजली अधिभार",
+                resultRawWaterSurcharge: "कच्चा पानी अधिभार",
+                resultFinalTotalBill: "अंतिम कुल बिल",
+                resultResetButton: "इनपुट रीसेट करें और रीफ्रेश करें",
+                naTapSize: "इस श्रेणी के लिए लागू नहीं",
+                naSurchargeMinBill: "लागू नहीं (न्यूनतम बिल लागू)",
+                basisTotal: "कुल",
+                basisPerFlat: "प्रति फ्लैट ({numFlats} फ्लैट)",
+                basisPerConnection: "प्रति कनेक्शन",
+                basisPerFlatSimple: "प्रति फ्लैट",
+                tipsSectionTitleOverall: "उपयोगी सुझाव",
+                tipAverageBillLabel: "औसत बिल",
+                tipAverageBillDescription: "यदि किसी कारण से आपके परिसर का मीटर रीडिंग एकत्र नहीं किया जा सका, जैसे कि घर का ताला लगा होना, मीटर बंद होना, मीटर के साथ छेड़छाड़ होना, मीटर का मिट्टी या कंक्रीट में दबा होना, या पानी में डूबा होना, तो इन स्थितियों में एक औसत बिल माना जाता है। यह आपकी पिछली खपत पर आधारित होता है।"
+            },
+            mr: {
+                pageTitle: "पाणी बिल कॅल्क्युलेटर",
+                languageLabel: "भाषा:",
+                headerTitle: "पाणी बिल कॅल्क्युलेटर",
+                headerSubtitle: "वापर, श्रेणी आणि नळाच्या आकारावर आधारित आपले पाणी बिल मोजा",
+                inputDetailsTitle: " तपशील प्रविष्ट करा",
+                categoryLabel: "श्रेणी",
+                catR1: "R1 - निवासी",
+                catIA: "IA - संस्थात्मक ए",
+                catIB: "IB - संस्थात्मक बी",
+                catC1A: "C1A - व्यावसायिक 1ए",
+                catC1B: "C1B - व्यावसायिक 1बी",
+                catC2: "C2 - व्यावसायिक 2",
+                catSlumHut: "झोपडपट्टीतील घर",
+                catSlumRCC: "झोपडपट्टीतील आरसीसी घर",
+                tapSizeLabel: "नळाचा आकार (मिमी)",
+                consumptionLabel: "एकूण वापर (युनिट)",
+                consumptionPlaceholder: "वापर प्रविष्ट करा",
+                monthsLabel: "बिलिंग कालावधी (महिने)",
+                useFlatsLabel: "निवासी फ्लॅट (अपार्टमेंट असल्यास, फक्त R1 साठी)",
+                numberOfFlatsLabel: "निवासी फ्लॅट्सची संख्या",
+                calculateButton: "बिल मोजा",
+                loadingText: "तुमचे बिल मोजले जात आहे...",
+                resultsTitle: "बिल गणना परिणाम",
+                resultsSubtitle: "तुमच्या पाणी बिलाचा तपशीलवार तपशील",
+                footerText: "श्री प्रीतम चौधरी यांनी तयार केले",
+                errorInvalidInput: "अवैध इनपुट पॅरामीटर्स...",
+                errorFlatsNumber: "'प्रति फ्लॅट गणना करा' सक्षम केल्यावर फ्लॅट्सची संख्या 1 किंवा अधिक असणे आवश्यक आहे.",
+                errorMinBillDataNotFound: "श्रेणी {category}, नळ आकार {tapSize}मिमी साठी किमान बिल डेटा आढळला नाही.",
+                errorInvalidConsumption: "कृपया वैध गैर-नकारात्मक एकूण वापर प्रविष्ट करा.",
+                errorInvalidMonths: "बिलिंग कालावधी (महिने) 1 किंवा अधिक असणे आवश्यक आहे.",
+                errorInvalidTapSize: "श्रेणी {category} साठी अवैध नळ आकार ({tapSize}मिमी) निवडला. कृपया वैध आकार निवडा.",
+                errorSelectTapSize: "कृपया {category} साठी नळाचा आकार निवडा.",
+                errorFlatsInput: "प्रति फ्लॅट गणना करताना कृपया निवासी फ्लॅट्सची वैध संख्या (1 किंवा अधिक) प्रविष्ट करा.",
+                resultCategory: "श्रेणी",
+                resultTapSize: "नळाचा आकार",
+                resultTotalConsumption: "एकूण वापर",
+                resultMonthlyAvgConsumption: "मासिक सरासरी वापर",
+                resultBasis: "आधार",
+                resultBillingPeriod: "बिलिंग कालावधी",
+                resultSlabBreakdownTitle: "स्लॅब-निहाय ब्रेकडाउन (मासिक {basisType})",
+                resultSlabRangeHeader: "स्लॅब श्रेणी",
+                resultRateHeader: "दर",
+                resultConsumptionInSlabHeader: "स्लॅबमधील वापर",
+                resultAmountHeader: "रक्कम",
+                resultCalcMonthlyBaseBill: "मोजलेले मासिक आधार बिल ({basisTypeDetail})",
+                resultMinBillApplied: "किमान बिल लागू",
+                resultMinBillSlumHut: " (झोपडपट्टीतील घर नियम: 15 युनिटपर्यंत)",
+                resultMinBillSlumRCC: " (झोपडपट्टीतील आरसीसी घर नियम: 20 युनिटपर्यंत)",
+                resultMinBillTapSize: " ({tapSize}मिमी नळासाठी)",
+                resultMinBillGeneric: " (किमान नियम)",
+                resultEffectiveMonthlyBill: "प्रभावी मासिक बिल ({basisTypeDetail})",
+                resultTotalBillCalcTitle: "एकूण बिल गणना ({months} महिने)",
+                resultComponentHeader: "घटक",
+                resultCalculationHeader: "गणना",
+                resultTotalBaseBill: "एकूण आधार बिल",
+                resultElectricitySurcharge: "वीज अधिभार",
+                resultRawWaterSurcharge: "कच्चे पाणी अधिभार",
+                resultFinalTotalBill: "अंतिम एकूण बिल",
+                resultResetButton: "इनपुट रीसेट करा आणि रिफ्रेश करा",
+                naTapSize: "या श्रेणीसाठी लागू नाही",
+                naSurchargeMinBill: "लागू नाही (किमान बिल लागू)",
+                basisTotal: "एकूण",
+                basisPerFlat: "प्रति फ्लॅट ({numFlats} फ्लॅट)",
+                basisPerConnection: "प्रति कनेक्शन",
+                basisPerFlatSimple: "प्रति फ्लॅट",
+                tipsSectionTitleOverall: "उपयुक्त सूचना",
+                tipAverageBillLabel: "सरासरी बिल",
+                tipAverageBillDescription: "जर काही कारणास्तव तुमच्या जागेचे मीटर रीडिंग गोळा करता आले नाही, जसे की घर कुलूपबंद असणे, मीटर बंद असणे, मीटरमध्ये छेडछाड करणे, मीटर मातीत किंवा काँक्रीटमध्ये गाडले जाणे, किंवा पाण्यात बुडणे, तर अशा परिस्थितीत सरासरी बिल विचारात घेतले जाते. हे तुमच्या मागील वापराच्या आधारावर असते."
+            }
+        };
+
+        let currentLang = 'en'; 
+        window.lastCalculationData = null;
+
+        function translatePage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang; 
+            document.querySelectorAll('[data-translate-key]').forEach(el => {
+                const key = el.getAttribute('data-translate-key');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.tagName === 'TITLE') { // Handle title tag separately
+                        el.textContent = translations[lang][key];
+                    } else {
+                        el.textContent = translations[lang][key];
+                    }
+                }
+            });
+            // Translate placeholder specifically for consumption input
+            const consumptionPlaceholderKey = consumptionInput.getAttribute('data-translate-key-placeholder');
+            if (consumptionPlaceholderKey && translations[lang] && translations[lang][consumptionPlaceholderKey]) {
+                consumptionInput.placeholder = translations[lang][consumptionPlaceholderKey];
+            }
+
+
+            categorySelect.querySelectorAll('option').forEach(option => {
+                const key = option.getAttribute('data-translate-key');
+                 if (translations[lang] && translations[lang][key]) {
+                    option.textContent = translations[lang][key];
+                }
+            });
+            // Update tap size dropdown if it shows "N/A"
+            if (tapSizeSelect.options.length === 1 && tapSizeSelect.options[0].disabled) {
+                tapSizeSelect.options[0].textContent = translateString('naTapSize');
+            }
+
+
+            if (resultElement.style.display === 'block' && window.lastCalculationData && !window.lastCalculationData.errorKey) {
+                displayResults(window.lastCalculationData);
+            } else if (resultElement.style.display === 'block' && window.lastCalculationData && window.lastCalculationData.errorKey) {
+                // If an error was displayed, re-translate the error message
+                errorElement.textContent = translateString(window.lastCalculationData.errorKey, window.lastCalculationData.errorPlaceholders || {});
+            }
+            // Re-translate loading text if it's visible (though unlikely to be needed if language changes while loading)
+            if(loadingIndicator.style.display === 'block') {
+                loadingIndicator.querySelector('p').textContent = translateString('loadingText');
+            }
+        }
+        
+        function translateString(key, replacements = {}) {
+            let str = (translations[currentLang] && translations[currentLang][key]) ? translations[currentLang][key] : key;
+            for (const placeholder in replacements) {
+                str = str.replace(new RegExp(`{${placeholder}}`, 'g'), replacements[placeholder]);
+            }
+            return str;
+        }
+
+
+        languageSwitcher.addEventListener('change', (event) => {
+            translatePage(event.target.value);
+            localStorage.setItem('preferredLanguage', event.target.value);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const preferredLang = localStorage.getItem('preferredLanguage');
+            if (preferredLang && translations[preferredLang]) {
+                languageSwitcher.value = preferredLang;
+                translatePage(preferredLang);
+            } else {
+                translatePage('en'); 
+            }
+            categorySelect.dispatchEvent(new Event('change'));
+
+            // --- Tips Toggle Logic ---
+            document.querySelectorAll('[data-toggle-tip]').forEach(header => {
+                header.addEventListener('click', function() {
+                    const contentId = this.getAttribute('data-toggle-tip');
+                    const contentElement = document.getElementById(contentId);
+                    const parentItem = this.closest('.tip-item-collapsible');
+                    
+                    if (contentElement && parentItem) {
+                        const isHidden = contentElement.style.display === 'none';
+                        contentElement.style.display = isHidden ? 'block' : 'none';
+                        
+                        if (isHidden) {
+                            parentItem.classList.add('open');
+                        } else {
+                            parentItem.classList.remove('open');
+                        }
+                    }
+                });
+            });
+        });
+
+
         function calculateBill(category, totalConsumption, months, tapSize, useFlats, numberOfFlats) {
-            // Basic validation (parameter level)
             if (!tariffs[category] || !minimumBills[category] || totalConsumption < 0 || months <= 0) {
-                return { error: "Invalid input parameters..." };
+                return { errorKey: "errorInvalidInput" };
             }
             if (useFlats && (isNaN(numberOfFlats) || numberOfFlats < 1)) {
-                 return { error: "Number of flats must be 1 or more when 'Calculate per Flat' is enabled." };
+                 return { errorKey: "errorFlatsNumber" };
             }
 
             const tariff = tariffs[category];
             const categoryMinimumBills = minimumBills[category];
             const baseMinimumBill = categoryMinimumBills ? categoryMinimumBills[tapSize] : undefined;
 
-            if (baseMinimumBill === undefined) {
-                return { error: `Minimum bill data not found for Category ${category}, Tap Size ${tapSize}mm.` };
+            if (baseMinimumBill === undefined && category !== "Slum Hut" && category !== "Slum RCC") {
+                return { errorKey: "errorMinBillDataNotFound", errorPlaceholders: { category: category, tapSize: tapSize } };
+            } else if (baseMinimumBill === undefined && (category === "Slum Hut" || category === "Slum RCC")) {
+                 if (!tapSize) {
+                     return { errorKey: "errorSelectTapSize", errorPlaceholders: { category: category } };
+                 } else if (baseMinimumBill === undefined) { 
+                     return { errorKey: "errorMinBillDataNotFound", errorPlaceholders: { category: category, tapSize: tapSize } };
+                 }
             }
 
-            // Determine the consumption basis for slab calculation
             let consumptionForSlabs;
-            let calculationBasis = "Total"; // Default
+            let calculationBasis = "Total"; 
             if (useFlats && category === "R1" && numberOfFlats > 0) {
                 consumptionForSlabs = totalConsumption / numberOfFlats;
                 calculationBasis = `Per Flat (${numberOfFlats} flats)`;
@@ -755,122 +1173,197 @@
             let remainingConsumption = monthlyConsumption;
             let previousLimit = 0;
 
-            // Calculate slab-wise cost based on monthlyConsumption
             for (const slab of tariff.slabs) {
                 const slabRange = slab.limit - previousLimit;
                 const consumptionInSlab = Math.min(remainingConsumption, slabRange);
-
                 if (consumptionInSlab > 0) {
                     const slabCost = consumptionInSlab * slab.rate;
                     monthlyBaseBill += slabCost;
-                    slabBreakdown.push({
-                        range: slab.range,
-                        rate: slab.rate,
-                        consumption: consumptionInSlab,
-                        cost: slabCost
-                    });
+                    slabBreakdown.push({ range: slab.range, rate: slab.rate, consumption: consumptionInSlab, cost: slabCost });
                     remainingConsumption -= consumptionInSlab;
                 }
-
                 if (remainingConsumption <= 0) break;
                 previousLimit = slab.limit;
             }
 
-            // Determine effective monthly bill (handling minimums)
-            let effectiveMonthlyBillPerUnit; // This is per month, per flat (if applicable) or per connection (if not)
+            let effectiveMonthlyBillPerUnit; 
             let minimumBillApplied = false;
             let appliedMinimumBillValue = null;
 
-            if (category === "Slum") {
-                // Slum category has special minimum rules based on consumption, not tap size directly here
-                const slumThreshold1 = 15; const slumMinBill1 = 53.87;
-                const slumThreshold2 = 20; const slumMinBill2 = 89.80;
-                if (monthlyConsumption < slumThreshold1) {
-                    effectiveMonthlyBillPerUnit = slumMinBill1;
+            if (category === "Slum Hut") {
+                const slumHutThreshold = 15; 
+                const slumHutMinBill = 53.87; 
+                if (monthlyConsumption < slumHutThreshold) {
+                    effectiveMonthlyBillPerUnit = slumHutMinBill;
                     minimumBillApplied = true;
-                    appliedMinimumBillValue = slumMinBill1;
-                } else if (monthlyConsumption < slumThreshold2) {
-                    effectiveMonthlyBillPerUnit = slumMinBill2;
-                    minimumBillApplied = true;
-                    appliedMinimumBillValue = slumMinBill2;
-                } else {
-                    effectiveMonthlyBillPerUnit = monthlyBaseBill; // Use calculated bill
-                    minimumBillApplied = false;
+                    appliedMinimumBillValue = slumHutMinBill;
+                } else { 
+                    effectiveMonthlyBillPerUnit = Math.max(monthlyBaseBill, baseMinimumBill || 0); 
+                    if (baseMinimumBill && monthlyBaseBill < baseMinimumBill) {
+                        minimumBillApplied = true; 
+                        appliedMinimumBillValue = baseMinimumBill;
+                    } else {
+                        minimumBillApplied = false; 
+                    }
                 }
-            } else {
-                // For other categories, compare calculated monthly bill with tap size minimum
-                effectiveMonthlyBillPerUnit = Math.max(monthlyBaseBill, baseMinimumBill);
-                minimumBillApplied = monthlyBaseBill < baseMinimumBill;
-                if (minimumBillApplied) {
+            } else if (category === "Slum RCC") {
+                const slumRccThreshold = 20;
+                const slumRccMinBill = 89.80; 
+                if (monthlyConsumption < slumRccThreshold) {
+                    effectiveMonthlyBillPerUnit = slumRccMinBill;
+                    minimumBillApplied = true;
+                    appliedMinimumBillValue = slumRccMinBill;
+                } else { 
+                    effectiveMonthlyBillPerUnit = Math.max(monthlyBaseBill, baseMinimumBill || 0); 
+                     if (baseMinimumBill && monthlyBaseBill < baseMinimumBill) {
+                        minimumBillApplied = true; 
+                        appliedMinimumBillValue = baseMinimumBill;
+                    } else {
+                        minimumBillApplied = false; 
+                    }
+                }
+            } else { 
+                effectiveMonthlyBillPerUnit = Math.max(monthlyBaseBill, baseMinimumBill || 0);
+                if (baseMinimumBill && monthlyBaseBill < baseMinimumBill) {
+                    minimumBillApplied = true;
                     appliedMinimumBillValue = baseMinimumBill;
+                } else {
+                     minimumBillApplied = false;
                 }
             }
 
-            // Calculate total bill before surcharges
             let totalBillBeforeSurcharges;
             if (useFlats && category === "R1" && numberOfFlats > 0) {
-                // Scale up the per-flat monthly bill by number of flats and months
                 totalBillBeforeSurcharges = effectiveMonthlyBillPerUnit * numberOfFlats * months;
             } else {
-                // Just scale the monthly bill by months
                 totalBillBeforeSurcharges = effectiveMonthlyBillPerUnit * months;
             }
 
-            // Surcharges are ALWAYS based on TOTAL consumption
-            const electricitySurcharge = totalConsumption * tariff.surcharges.electricity;
-            const rawWaterSurcharge = totalConsumption * tariff.surcharges.rawWater;
+            let electricitySurcharge = 0;
+            let rawWaterSurcharge = 0;
+            
+            const isFixedSlumMinBillApplied = (
+                (category === "Slum Hut" && appliedMinimumBillValue === 53.87 && monthlyConsumption < 15) ||
+                (category === "Slum RCC" && appliedMinimumBillValue === 89.80 && monthlyConsumption < 20)
+            );
 
-            // Final total bill
+            if (!isFixedSlumMinBillApplied) {
+                electricitySurcharge = totalConsumption * tariff.surcharges.electricity;
+                rawWaterSurcharge = totalConsumption * tariff.surcharges.rawWater;
+            }
+
+
             const finalTotalBill = totalBillBeforeSurcharges + electricitySurcharge + rawWaterSurcharge;
 
             return {
-                categoryDetails: {
-                    category,
-                    tapSize,
-                    minUnit: tariff.minUnit,
-                    minimumBill: baseMinimumBill // The base minimum for the tap size
+                categoryDetails: { category, tapSize, minUnit: tariff.minUnit, minimumBill: baseMinimumBill },
+                consumption: { total: totalConsumption, monthlyPerUnit: monthlyConsumption.toFixed(2), calculationBasis: calculationBasis, numberOfFlats: (useFlats && category === "R1" && numberOfFlats > 0) ? numberOfFlats : null },
+                billing: { monthlyBaseBillPerUnit: monthlyBaseBill.toFixed(2), effectiveMonthlyBillPerUnit: effectiveMonthlyBillPerUnit.toFixed(2), minimumBillApplied, appliedMinimumBillValue, months, totalBillBeforeSurcharges: totalBillBeforeSurcharges.toFixed(2) },
+                surcharges: { 
+                    electricity: { rate: tariff.surcharges.electricity, amount: electricitySurcharge.toFixed(2) }, 
+                    rawWater: { rate: tariff.surcharges.rawWater, amount: rawWaterSurcharge.toFixed(2) } 
                 },
-                consumption: {
-                    total: totalConsumption,
-                    monthlyPerUnit: monthlyConsumption.toFixed(2), // Monthly consumption used for slabs (could be per flat)
-                    calculationBasis: calculationBasis,
-                    numberOfFlats: (useFlats && category === "R1" && numberOfFlats > 0) ? numberOfFlats : null
-                },
-                billing: {
-                    monthlyBaseBillPerUnit: monthlyBaseBill.toFixed(2), // Calculated from slabs (per flat or per connection)
-                    effectiveMonthlyBillPerUnit: effectiveMonthlyBillPerUnit.toFixed(2), // After minimum rules (per flat or per connection)
-                    minimumBillApplied,
-                    appliedMinimumBillValue,
-                    months,
-                    totalBillBeforeSurcharges: totalBillBeforeSurcharges.toFixed(2)
-                },
-                surcharges: {
-                    electricity: { rate: tariff.surcharges.electricity, amount: electricitySurcharge.toFixed(2) },
-                    rawWater: { rate: tariff.surcharges.rawWater, amount: rawWaterSurcharge.toFixed(2) }
-                },
-                slabBreakdown, // Based on monthlyConsumptionPerUnit
-                finalTotalBill: finalTotalBill.toFixed(2)
+                slabBreakdown, 
+                finalTotalBill: finalTotalBill.toFixed(2),
+                isFixedSlumMinBillApplied 
             };
         }
 
-        // --- DOM Element References ---
-        const categorySelect = document.getElementById('category');
-        const tapSizeSelect = document.getElementById('tapSize');
-        const consumptionInput = document.getElementById('consumption');
-        const monthsInput = document.getElementById('months');
-        const useFlatsCheckbox = document.getElementById('useFlats');
-        const numberOfFlatsInput = document.getElementById('numberOfFlats');
-        const flatsCalculationGroup = document.getElementById('flats-calculation-group');
-        const calculateButton = document.getElementById('calculate');
-        const errorElement = document.getElementById('error');
-        const resultElement = document.getElementById('result');
-        const resultContentElement = document.getElementById('result-content');
-        const loadingIndicator = document.getElementById('loading-indicator');
+        function displayResults(result) {
+            let basisText = result.consumption.calculationBasis === "Total" ? 
+                translateString('basisTotal') : 
+                translateString('basisPerFlat', {numFlats: result.consumption.numberOfFlats});
+
+            let slabBreakdownTitleBasis = result.consumption.calculationBasis === 'Total' ? translateString('basisTotal') : translateString('basisPerFlatSimple');
+            
+            let basisTypeDetailText = result.consumption.calculationBasis === 'Total' ? translateString('basisPerConnection') : translateString('basisPerFlatSimple');
 
 
-        // --- Event Listeners ---
+            let html = `
+                <div class="info-group">
+                    <div class="info-item"><div class="info-label">${translateString('resultCategory')}</div><div class="info-value">${result.categoryDetails.category}</div></div>
+                    <div class="info-item"><div class="info-label">${translateString('resultTapSize')}</div><div class="info-value">${result.categoryDetails.tapSize || translateString('naTapSize')} mm</div></div>
+                    <div class="info-item"><div class="info-label">${translateString('resultTotalConsumption')}</div><div class="info-value">${result.consumption.total} Units</div></div>
+                     <div class="info-item">
+                         <div class="info-label">${translateString('resultMonthlyAvgConsumption')}</div>
+                         <div class="info-value">${result.consumption.monthlyPerUnit} Units</div>
+                         <div class="info-value-small" style="margin-top: 5px;">${translateString('resultBasis')}: ${basisText}</div>
+                     </div>
+                    <div class="info-item"><div class="info-label">${translateString('resultBillingPeriod')}</div><div class="info-value">${result.billing.months} Month(s)</div></div>
+                </div>
 
-        // Calculate Button Click
+                <h3 class="section-title">${translateString('resultSlabBreakdownTitle', {basisType: slabBreakdownTitleBasis})}</h3>
+                <table>
+                    <thead><tr><th>${translateString('resultSlabRangeHeader')}</th><th>${translateString('resultRateHeader')}</th><th>${translateString('resultConsumptionInSlabHeader')}</th><th>${translateString('resultAmountHeader')}</th></tr></thead>
+                    <tbody>`;
+
+            result.slabBreakdown.forEach(slab => {
+                html += `<tr><td><span class="badge badge-primary">${slab.range}</span></td><td>${formatCurrency(slab.rate)}</td><td>${slab.consumption.toFixed(2)} Units</td><td>${formatCurrency(slab.cost)}</td></tr>`;
+            });
+
+            html += `<tr class="total-row"><td colspan="3">${translateString('resultCalcMonthlyBaseBill', {basisTypeDetail: basisTypeDetailText})}</td><td>${formatCurrency(result.billing.monthlyBaseBillPerUnit)}</td></tr>`;
+
+            if (result.billing.minimumBillApplied) {
+                let minBillText = translateString('resultMinBillApplied');
+                const monthlyAvgConsumptionNum = parseFloat(result.consumption.monthlyPerUnit);
+                const appliedMinBillNum = parseFloat(result.billing.appliedMinimumBillValue);
+
+                if (result.categoryDetails.category === "Slum Hut" && appliedMinBillNum === 53.87 && monthlyAvgConsumptionNum < 15) {
+                   minBillText += translateString('resultMinBillSlumHut');
+                } else if (result.categoryDetails.category === "Slum RCC" && appliedMinBillNum === 89.80 && monthlyAvgConsumptionNum < 20) {
+                   minBillText += translateString('resultMinBillSlumRCC');
+                } else if (result.categoryDetails.tapSize && result.billing.appliedMinimumBillValue === result.categoryDetails.minimumBill) { 
+                   minBillText += translateString('resultMinBillTapSize', {tapSize: result.categoryDetails.tapSize});
+                } else { 
+                    minBillText += translateString('resultMinBillGeneric');
+                }
+                html += `
+                    <tr>
+                        <td colspan="3"><span class="badge badge-accent">${minBillText}</span></td>
+                        <td>${formatCurrency(result.billing.appliedMinimumBillValue)}</td>
+                    </tr>`;
+            }
+
+            html += `<tr class="total-row"><td colspan="3">${translateString('resultEffectiveMonthlyBill', {basisTypeDetail: basisTypeDetailText})}</td><td>${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)}</td></tr>`;
+            html += `</tbody></table>`;
+
+            html += `<h3 class="section-title">${translateString('resultTotalBillCalcTitle', {months: result.billing.months})}</h3>
+                <table>
+                    <thead><tr><th>${translateString('resultComponentHeader')}</th><th>${translateString('resultCalculationHeader')}</th><th>${translateString('resultAmountHeader')}</th></tr></thead>
+                    <tbody>`;
+            let baseBillCalcText = `${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} × ${result.billing.months} month(s)`;
+             if(result.consumption.calculationBasis !== 'Total' && result.consumption.numberOfFlats) {
+                 baseBillCalcText = `(${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} per flat × ${result.consumption.numberOfFlats} flats) × ${result.billing.months} month(s)`;
+             }
+            html += `<tr><td>${translateString('resultTotalBaseBill')}</td><td>${baseBillCalcText}</td><td>${formatCurrency(result.billing.totalBillBeforeSurcharges)}</td></tr>`;
+            
+            let elecSurchargeCalc = result.isFixedSlumMinBillApplied ? translateString('naSurchargeMinBill') : formatCurrency(result.surcharges.electricity.rate) + ' × ' + result.consumption.total + ' total units';
+            let rawWaterSurchargeCalc = result.isFixedSlumMinBillApplied ? translateString('naSurchargeMinBill') : formatCurrency(result.surcharges.rawWater.rate) + ' × ' + result.consumption.total + ' total units';
+
+            html += `<tr><td>${translateString('resultElectricitySurcharge')}</td><td>${elecSurchargeCalc}</td><td>${formatCurrency(result.surcharges.electricity.amount)}</td></tr>
+                     <tr><td>${translateString('resultRawWaterSurcharge')}</td><td>${rawWaterSurchargeCalc}</td><td>${formatCurrency(result.surcharges.rawWater.amount)}</td></tr>
+                     <tr class="total-row final-total"><td colspan="2">${translateString('resultFinalTotalBill')}</td><td><span class="badge badge-success">${formatCurrency(result.finalTotalBill)}</span></td></tr>
+                    </tbody>
+                </table>`;
+            
+            html += `
+                <button id="reset-results-button" class="btn btn-secondary btn-block" style="margin-top: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.5" style="margin-right: 8px; vertical-align: -3px;"> <path d="M2.5 2v6h6L12 4.5V6h8V2H2.5zM21.5 22h-6v-4l-3.5 3.5V20h-8v4h17.5z" opacity=".3"/><path d="M12 4.5L8.5 8h-6V2h10v2.5zM10 20.5l3.5-3.5h6V22H10v-1.5zM20 7H4v2h16V7zm0 8H4v2h16v-2z"/> <path d="M4 17.5A2.5 2.5 0 0 1 6.5 20H10v1.5L8.5 20H6.5A4.5 4.5 0 0 0 2 17.5v-11A4.5 4.5 0 0 0 6.5 2H10V.5L8.5 2H6.5A2.5 2.5 0 0 1 4 4.5v13zM20 6.5A2.5 2.5 0 0 1 17.5 4H14V2.5L15.5 4H17.5A4.5 4.5 0 0 0 22 6.5v11a4.5 4.5 0 0 0-4.5 4.5H14V24l1.5-1.5h2.5a2.5 2.5 0 0 1 2.5-2.5v-13z"/> </svg>
+                    <span data-translate-key="resultResetButton">${translateString('resultResetButton')}</span>
+                </button>
+            `;
+
+            setTimeout(() => {
+                loadingIndicator.style.display = 'none';
+                resultContentElement.innerHTML = html;
+                resultElement.classList.remove('animate-fade-in');
+                resultElement.style.display = 'block';
+                resultElement.classList.add('animate-fade-in');
+                resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 800); 
+        }
+        
+
         calculateButton.addEventListener('click', function() {
             const category = categorySelect.value;
             const tapSize = tapSizeSelect.value;
@@ -881,187 +1374,111 @@
 
             errorElement.textContent = ''; errorElement.style.display = 'none';
             resultElement.style.display = 'none'; loadingIndicator.style.display = 'block';
+            loadingIndicator.querySelector('p').textContent = translateString('loadingText');
 
-            // --- Input Validations ---
+
              if (isNaN(consumption) || consumption < 0) {
-                 errorElement.textContent = 'Please enter a valid non-negative Total Consumption.';
-                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+                 errorElement.textContent = translateString('errorInvalidConsumption');
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; 
+                 window.lastCalculationData = { errorKey: 'errorInvalidConsumption' }; 
+                 return;
              }
              if (isNaN(months) || months < 1) {
-                 errorElement.textContent = 'Billing Period (Months) must be 1 or more.';
-                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+                 errorElement.textContent = translateString('errorInvalidMonths');
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; 
+                 window.lastCalculationData = { errorKey: 'errorInvalidMonths' };
+                 return;
              }
-             if (!minimumBills[category] || minimumBills[category][tapSize] === undefined) {
-                 errorElement.textContent = `Invalid tap size (${tapSize}mm) selected for category ${category}. Please select a valid size.`;
-                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+             if ((category !== "Slum Hut" && category !== "Slum RCC") && (!minimumBills[category] || minimumBills[category][tapSize] === undefined)) {
+                 errorElement.textContent = translateString('errorInvalidTapSize', {tapSize: tapSize, category: category});
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; 
+                 window.lastCalculationData = { errorKey: 'errorInvalidTapSize', errorPlaceholders: {tapSize: tapSize, category: category} };
+                 return;
              }
-             // Validate flats input ONLY if the checkbox is checked
+             if ((category === "Slum Hut" || category === "Slum RCC") && !tapSizeSelect.value) { 
+                errorElement.textContent = translateString('errorSelectTapSize', {category: category});
+                errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; 
+                window.lastCalculationData = { errorKey: 'errorSelectTapSize', errorPlaceholders: {category: category} };
+                return;
+             }
+
              if (useFlats && (isNaN(numberOfFlats) || numberOfFlats < 1)) {
-                 errorElement.textContent = 'Please enter a valid Number of Residential Flats (1 or more) when calculating per flat.';
-                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; return;
+                 errorElement.textContent = translateString('errorFlatsInput');
+                 errorElement.style.display = 'block'; loadingIndicator.style.display = 'none'; 
+                 window.lastCalculationData = { errorKey: 'errorFlatsInput' };
+                 return;
              }
 
-            // --- Call calculateBill ---
             const result = calculateBill(category, consumption, months, tapSize, useFlats, numberOfFlats);
+            window.lastCalculationData = result;
 
-            // Handle calculation error returned by the function
-            if (result.error) {
-                errorElement.textContent = result.error;
+            if (result.errorKey) {
+                errorElement.textContent = translateString(result.errorKey, result.errorPlaceholders || {});
                 errorElement.style.display = 'block';
                 loadingIndicator.style.display = 'none';
                 return;
             }
-
-            // --- Build Result HTML ---
-            let html = `
-                <div class="info-group">
-                    <div class="info-item"><div class="info-label">Category</div><div class="info-value">${result.categoryDetails.category}</div></div>
-                    <div class="info-item"><div class="info-label">Tap Size</div><div class="info-value">${result.categoryDetails.tapSize} mm</div></div>
-                    <div class="info-item"><div class="info-label">Total Consumption</div><div class="info-value">${result.consumption.total} Units</div></div>
-                     <div class="info-item">
-                         <div class="info-label">Monthly Avg. Consumption</div>
-                         <div class="info-value">${result.consumption.monthlyPerUnit} Units</div>
-                         <div class="info-value-small" style="margin-top: 5px;">Basis: ${result.consumption.calculationBasis}</div>
-                     </div>
-                    <div class="info-item"><div class="info-label">Billing Period</div><div class="info-value">${result.billing.months} Month(s)</div></div>
-                </div>
-
-                <h3 class="section-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                    Slab-wise Breakdown (Monthly ${result.consumption.calculationBasis === 'Total' ? 'Average' : 'Per Flat'})
-                </h3>
-                <table>
-                    <thead><tr><th>Slab Range</th><th>Rate</th><th>Consumption in Slab</th><th>Amount</th></tr></thead>
-                    <tbody>`;
-
-            result.slabBreakdown.forEach(slab => {
-                html += `<tr><td><span class="badge badge-primary">${slab.range}</span></td><td>${formatCurrency(slab.rate)}</td><td>${slab.consumption.toFixed(2)} Units</td><td>${formatCurrency(slab.cost)}</td></tr>`;
-            });
-
-             // Show the calculated base bill (per unit - flat or connection)
-            html += `<tr class="total-row"><td colspan="3">Calculated Monthly Base Bill (${result.consumption.calculationBasis === 'Total' ? 'per Connection' : 'per Flat'})</td><td>${formatCurrency(result.billing.monthlyBaseBillPerUnit)}</td></tr>`;
-
-            // Show minimum bill if applied
-            if (result.billing.minimumBillApplied) {
-                let minBillText = `Minimum Bill Applied`;
-                if(result.categoryDetails.category !== "Slum") {
-                   minBillText += ` (for ${result.categoryDetails.tapSize}mm tap)`;
-                } else {
-                    minBillText += ` (Slum Rule)`; // Clarify slum rule
-                }
-                html += `
-                    <tr>
-                        <td colspan="3">
-                            <span class="badge badge-accent">${minBillText}</span>
-                        </td>
-                        <td>${formatCurrency(result.billing.appliedMinimumBillValue)}</td>
-                    </tr>
-                `;
+            
+            displayResults(result);
+        });
+        
+        resultElement.addEventListener('click', function(event) {
+            if (event.target.id === 'reset-results-button' || (event.target.closest && event.target.closest('#reset-results-button'))) {
+                location.reload();
             }
-
-            // Show the effective monthly bill (per unit - flat or connection) after minimums
-            html += `<tr class="total-row"><td colspan="3">Effective Monthly Bill (${result.consumption.calculationBasis === 'Total' ? 'per Connection' : 'per Flat'})</td><td>${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)}</td></tr>`;
-            html += `</tbody></table>`;
-
-
-            // --- Final Calculation Section ---
-            html += `
-                <h3 class="section-title">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M19 5H5v14h14V5zM9 17H7m10-2h-4"></path></svg>
-                     Total Bill Calculation (${result.billing.months} Month(s))
-                </h3>
-                <table>
-                    <thead><tr><th>Component</th><th>Calculation</th><th>Amount</th></tr></thead>
-                    <tbody>`;
-
-             // Explain the total base bill calculation clearly
-            let baseBillCalcText = `${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} × ${result.billing.months} month(s)`;
-             if(result.consumption.calculationBasis !== 'Total' && result.consumption.numberOfFlats) {
-                 baseBillCalcText = `(${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} per flat × ${result.consumption.numberOfFlats} flats) × ${result.billing.months} month(s)`;
-             }
-            html += `<tr><td>Total Base Bill</td><td>${baseBillCalcText}</td><td>${formatCurrency(result.billing.totalBillBeforeSurcharges)}</td></tr>`;
-
-             // Surcharges
-            html += `   <tr><td>Electricity Surcharge</td><td>${formatCurrency(result.surcharges.electricity.rate)} × ${result.consumption.total} total units</td><td>${formatCurrency(result.surcharges.electricity.amount)}</td></tr>
-                        <tr><td>Raw Water Surcharge</td><td>${formatCurrency(result.surcharges.rawWater.rate)} × ${result.consumption.total} total units</td><td>${formatCurrency(result.surcharges.rawWater.amount)}</td></tr>
-                        <tr class="total-row final-total"><td colspan="2">Final Total Bill</td><td><span class="badge badge-success">${formatCurrency(result.finalTotalBill)}</span></td></tr>
-                    </tbody>
-                </table>`;
-
-            // --- Display Results ---
-            setTimeout(() => {
-                loadingIndicator.style.display = 'none';
-                resultContentElement.innerHTML = html;
-                resultElement.classList.remove('animate-fade-in');
-                resultElement.style.display = 'block';
-                resultElement.classList.add('animate-fade-in');
-                resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 800); // Simulate calculation time
         });
 
-        // Category Change Listener (Updates Tap Sizes AND Flat Calculation Visibility)
         categorySelect.addEventListener('change', function() {
             const selectedCategory = this.value;
-            const currentTapSizeValue = tapSizeSelect.value; // Remember current selection
+            const currentTapSizeValue = tapSizeSelect.value; 
             let newSelectedValue = null;
 
-            // Update Tap Sizes
             const validTapSizes = minimumBills[selectedCategory] ? Object.keys(minimumBills[selectedCategory]) : [];
-            tapSizeSelect.innerHTML = ''; // Clear existing options
+            tapSizeSelect.innerHTML = ''; 
 
             if (validTapSizes.length > 0) {
                 validTapSizes.forEach(size => {
                     const option = document.createElement('option');
                     option.value = size;
-                    option.textContent = `${size} mm`; // Add units for clarity
+                    option.textContent = `${size} mm`; 
                     tapSizeSelect.appendChild(option);
-                    // Try to re-select the previously selected size if valid for new category
                     if (size === currentTapSizeValue) {
                         newSelectedValue = size;
                     }
                 });
-                // Set the value after adding all options
-                tapSizeSelect.value = newSelectedValue || validTapSizes[0]; // Default to first valid or re-selected
+                tapSizeSelect.value = newSelectedValue || validTapSizes[0]; 
                 tapSizeSelect.disabled = false;
             } else {
                 const option = document.createElement('option');
-                option.value = "";
-                option.textContent = "N/A for this category";
+                option.value = ""; 
+                option.textContent = translateString('naTapSize');
                 option.disabled = true;
                 tapSizeSelect.appendChild(option);
                 tapSizeSelect.disabled = true;
             }
 
-             // Show/Hide Flats Calculation Section
              if (selectedCategory === 'R1') {
                  flatsCalculationGroup.style.display = 'block';
-                 // Enable checkbox (flat number input enabled/disabled by checkbox state)
                  useFlatsCheckbox.disabled = false;
              } else {
                  flatsCalculationGroup.style.display = 'none';
-                 // Disable and uncheck flats option if category is not R1
                  useFlatsCheckbox.checked = false;
                  useFlatsCheckbox.disabled = true;
-                 numberOfFlatsInput.disabled = true; // Ensure number input is disabled too
-                 numberOfFlatsInput.value = '1'; // Reset to default
+                 numberOfFlatsInput.disabled = true; 
+                 numberOfFlatsInput.value = '1'; 
              }
         });
 
-        // Flats Checkbox Listener (Enables/Disables Number of Flats Input)
          useFlatsCheckbox.addEventListener('change', function() {
              if (this.checked) {
                  numberOfFlatsInput.disabled = false;
-                 numberOfFlatsInput.focus(); // Optional: focus the input
+                 numberOfFlatsInput.focus(); 
              } else {
                  numberOfFlatsInput.disabled = true;
-                 numberOfFlatsInput.value = '1'; // Reset to default when unchecked
+                 numberOfFlatsInput.value = '1'; 
              }
          });
 
-        // --- Initial Setup ---
-        // Trigger category change on page load to set initial tap sizes and flat visibility
-        categorySelect.dispatchEvent(new Event('change'));
-        // Ensure flat number input is initially disabled as checkbox is unchecked
         numberOfFlatsInput.disabled = true;
 
     </script>
