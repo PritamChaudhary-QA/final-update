@@ -794,7 +794,7 @@
             "C1A": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 62.86 }, { range: "Above 80", limit: Infinity, rate: 80.79 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "C1B": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 89.80 }, { range: "Above 80", limit: Infinity, rate: 134.69 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "C2": { minUnit: 10, slabs: [{ range: "1-30", limit: 30, rate: 107.76 }, { range: "31-100", limit: 100, rate: 323.26 }, { range: "Above 100", limit: Infinity, rate: 969.78 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
-            "Slum Hut": { minUnit: 15, slabs: [{ range: "1-15", limit: 15, rate: 3.591 }, { range: "15-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "Slum Hut": { minUnit: 15, slabs: [{ range: "1-15", limit: 15, rate: 3.591333333333333 }, { range: "15-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "Slum RCC": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 4.495 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } }
         };
 
@@ -1243,8 +1243,7 @@
             let rawWaterSurcharge = 0;
             
             const isFixedSlumMinBillApplied = (
-                (category === "Slum Hut" && appliedMinimumBillValue === 53.87 && monthlyConsumption < 15) ||
-                (category === "Slum RCC" && appliedMinimumBillValue === 89.80 && monthlyConsumption < 20)
+                (category === "Slum Hut" && appliedMinimumBillValue === 53.87 && monthlyConsumption < 15)
             );
 
             if (!isFixedSlumMinBillApplied) {
