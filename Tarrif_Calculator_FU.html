@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -794,7 +793,7 @@
             "C1A": { minUnit: 10, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 62.86 }, { range: "Above 80", limit: Infinity, rate: 80.79 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "C1B": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 44.90 }, { range: "21-80", limit: 80, rate: 89.80 }, { range: "Above 80", limit: Infinity, rate: 134.69 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "C2": { minUnit: 10, slabs: [{ range: "1-30", limit: 30, rate: 107.76 }, { range: "31-100", limit: 100, rate: 323.26 }, { range: "Above 100", limit: Infinity, rate: 969.78 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
-            "Slum Hut": { minUnit: 15, slabs: [{ range: "1-15", limit: 15, rate: 3.591333333333333 }, { range: "15-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
+            "Slum Hut": { minUnit: 15, slabs: [{ range: "1-15", limit: 15, rate: 3.591 }, { range: "15-20", limit: 20, rate: 8.99 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } },
             "Slum RCC": { minUnit: 20, slabs: [{ range: "1-20", limit: 20, rate: 4.495 }, { range: "21-30", limit: 30, rate: 14.37 }, { range: "31-80", limit: 80, rate: 19.76 }, { range: "Above 80", limit: Infinity, rate: 26.95 }], surcharges: { electricity: 2.85, rawWater: 0.13 } }
         };
 
@@ -1037,7 +1036,7 @@
                 basisPerFlat: "प्रति फ्लॅट ({numFlats} फ्लॅट)",
                 basisPerConnection: "प्रति कनेक्शन",
                 basisPerFlatSimple: "प्रति फ्लॅट",
-                tipsSectionTitleOverall: "उपयुक्त सूचना",
+                tipsSectionTitleOverall: "उपयोगी सूचना",
                 tipAverageBillLabel: "सरासरी बिल",
                 tipAverageBillDescription: "जर काही कारणास्तव तुमच्या जागेचे मीटर रीडिंग गोळा करता आले नाही, जसे की घर कुलूपबंद असणे, मीटर बंद असणे, मीटरमध्ये छेडछाड करणे, मीटर मातीत किंवा काँक्रीटमध्ये गाडले जाणे, किंवा पाण्यात बुडणे, तर अशा परिस्थितीत सरासरी बिल विचारात घेतले जाते. हे तुमच्या मागील वापराच्या आधारावर असते."
             }
@@ -1167,7 +1166,7 @@
                 consumptionForSlabs = totalConsumption;
             }
 
-            const monthlyConsumption = consumptionForSlabs / months;
+            const monthlyConsumption = consumptionForSlabs / months; // This is monthly average per unit (flat/connection)
             let monthlyBaseBill = 0;
             let slabBreakdown = [];
             let remainingConsumption = monthlyConsumption;
@@ -1241,15 +1240,32 @@
 
             let electricitySurcharge = 0;
             let rawWaterSurcharge = 0;
+            let surchargeableUnitsForCalc = 0; // Units on which surcharge will be calculated
             
             const isFixedSlumMinBillApplied = (
                 (category === "Slum Hut" && appliedMinimumBillValue === 53.87 && monthlyConsumption < 15)
             );
 
-            if (!isFixedSlumMinBillApplied) {
-                electricitySurcharge = totalConsumption * tariff.surcharges.electricity;
-                rawWaterSurcharge = totalConsumption * tariff.surcharges.rawWater;
+            if (!isFixedSlumMinBillApplied) { // Surcharges apply only if not a fixed minimum bill case
+                if (category === "Slum Hut") {
+                    const slumHutSurchargeThresholdPerMonth = 15;
+                    // For Slum Hut, `monthlyConsumption` is `totalConsumption / months` because it doesn't use flats logic here.
+                    const totalThresholdUnitsOverPeriod = slumHutSurchargeThresholdPerMonth * months;
+
+                    if (totalConsumption > totalThresholdUnitsOverPeriod) {
+                        surchargeableUnitsForCalc = totalConsumption - totalThresholdUnitsOverPeriod;
+                    } else {
+                        surchargeableUnitsForCalc = 0; // No surcharge if total consumption is at or below the total threshold for the period
+                    }
+                } else {
+                    // For all other categories (not Slum Hut)
+                    surchargeableUnitsForCalc = totalConsumption;
+                }
+                
+                electricitySurcharge = surchargeableUnitsForCalc * tariff.surcharges.electricity;
+                rawWaterSurcharge = surchargeableUnitsForCalc * tariff.surcharges.rawWater;
             }
+            // If isFixedSlumMinBillApplied is true, surcharges (and surchargeableUnitsForCalc) remain 0.
 
 
             const finalTotalBill = totalBillBeforeSurcharges + electricitySurcharge + rawWaterSurcharge;
@@ -1260,7 +1276,8 @@
                 billing: { monthlyBaseBillPerUnit: monthlyBaseBill.toFixed(2), effectiveMonthlyBillPerUnit: effectiveMonthlyBillPerUnit.toFixed(2), minimumBillApplied, appliedMinimumBillValue, months, totalBillBeforeSurcharges: totalBillBeforeSurcharges.toFixed(2) },
                 surcharges: { 
                     electricity: { rate: tariff.surcharges.electricity, amount: electricitySurcharge.toFixed(2) }, 
-                    rawWater: { rate: tariff.surcharges.rawWater, amount: rawWaterSurcharge.toFixed(2) } 
+                    rawWater: { rate: tariff.surcharges.rawWater, amount: rawWaterSurcharge.toFixed(2) },
+                    surchargeableUnits: surchargeableUnitsForCalc // Pass this for display
                 },
                 slabBreakdown, 
                 finalTotalBill: finalTotalBill.toFixed(2),
@@ -1334,10 +1351,17 @@
              if(result.consumption.calculationBasis !== 'Total' && result.consumption.numberOfFlats) {
                  baseBillCalcText = `(${formatCurrency(result.billing.effectiveMonthlyBillPerUnit)} per flat × ${result.consumption.numberOfFlats} flats) × ${result.billing.months} month(s)`;
              }
-            html += `<tr><td>${translateString('resultTotalBaseBill')}</td><td>${baseBillCalcText}</td><td>${formatCurrency(result.billing.totalBillBeforeSurcharges)}</td></tr>`;
+            html += `<tr><td>${translateString('resultTotalBaseBill')}</td><td>${baseBillCalcText}</td><td><strong>${formatCurrency(result.billing.totalBillBeforeSurcharges)}</strong></td></tr>`;
             
-            let elecSurchargeCalc = result.isFixedSlumMinBillApplied ? translateString('naSurchargeMinBill') : formatCurrency(result.surcharges.electricity.rate) + ' × ' + result.consumption.total + ' total units';
-            let rawWaterSurchargeCalc = result.isFixedSlumMinBillApplied ? translateString('naSurchargeMinBill') : formatCurrency(result.surcharges.rawWater.rate) + ' × ' + result.consumption.total + ' total units';
+            let surchargeableUnitsForDisplay = result.surcharges.surchargeableUnits;
+            let elecSurchargeCalc = result.isFixedSlumMinBillApplied ? 
+                translateString('naSurchargeMinBill') : 
+                `${formatCurrency(result.surcharges.electricity.rate)} × ${surchargeableUnitsForDisplay.toFixed(2)} units`;
+            
+            let rawWaterSurchargeCalc = result.isFixedSlumMinBillApplied ? 
+                translateString('naSurchargeMinBill') : 
+                `${formatCurrency(result.surcharges.rawWater.rate)} × ${surchargeableUnitsForDisplay.toFixed(2)} units`;
+
 
             html += `<tr><td>${translateString('resultElectricitySurcharge')}</td><td>${elecSurchargeCalc}</td><td>${formatCurrency(result.surcharges.electricity.amount)}</td></tr>
                      <tr><td>${translateString('resultRawWaterSurcharge')}</td><td>${rawWaterSurchargeCalc}</td><td>${formatCurrency(result.surcharges.rawWater.amount)}</td></tr>
